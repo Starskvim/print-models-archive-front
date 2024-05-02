@@ -32,6 +32,8 @@ const PrintModelCardComponent = (
             {/*<h5 className="card-title">{product.modelName}</h5>*/}
             {/*<p className="card-text">{product.modelName}</p>*/}
             <p className="card-text">Id - {product.id}</p>
+            <p className="card-text">Added at - {product?.addedAt}</p>
+            <p className="card-text">NSFW - {product?.nsfw}</p>
             <p className="card-text">Rate - {product.rate}</p>
             {/*<p className="card-text" style={{textDecoration: 'line-through'}}>{product.id}</p>*/}
             {/*<p className="card-text">{product.id}</p>*/}

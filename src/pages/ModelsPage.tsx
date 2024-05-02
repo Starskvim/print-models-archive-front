@@ -51,6 +51,7 @@ export class ModelsPage extends Component {
         this.setState({gender, currentPage: 1});
     };
 
+
     handleSaleFilter = (filterBySale: boolean) => {
         this.setState({filterBySale, currentPage: 1});
     };
@@ -67,6 +68,10 @@ export class ModelsPage extends Component {
 
     handleOverlayBgClick = () => {
         this.setState({showAdditionalImage: false, additionalImageUrls: []});
+    };
+
+    handleTest = () => {
+
     };
 
     render() {
@@ -122,6 +127,7 @@ export class ModelsPage extends Component {
                     products={paginated}
                     onProductClick={this.handleProductClick}
                     cachedImages={this.cachedImages}
+                    onPageChange={this.handleTest}
                 />
                 <div className="row">
                     <div className="col">

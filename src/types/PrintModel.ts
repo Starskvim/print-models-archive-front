@@ -3,5 +3,6 @@ export interface PrintModel {
     preview: string,
     modelName: string,
     rate: number,
-    nsfw: boolean
+    nsfw: boolean,
+    addedAt: string
 }
