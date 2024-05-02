@@ -33,7 +33,7 @@ export async function fetchModelCards(
     name: string | undefined,
     category: string | undefined,
     rate : string | undefined
-): Promise<PrintModelCard[]> {
+): Promise<PrintModelsResponse> {
   const params = new URLSearchParams();
   if (page != undefined) {
     params.append('page', page);
@@ -53,7 +53,8 @@ export async function fetchModelCards(
   if (rate != undefined) {
     params.append('rate', rate);
   }
-  const url = API + params.toString();
+  const url = API + "?" + params.toString();
+  console.log("fetchModelCards url - " + url)
   const input = await http.get(url) as PrintModelsResponse
-  return input.models
+  return input
 }

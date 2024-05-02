@@ -1,18 +1,23 @@
 import {PrintModelCard} from "../types/PrintModelCard";
 import PrintModelCardComponent from "./PrintModelCardComponent";
 import Pagination from "./Pagination";
+import {PageState} from "../types/state";
+
+export const DEFAULT_PAGE_SIZE = 2
 
 const PrintModelCardsComponent = (
     {
         products,
         onProductClick,
         cachedImages,
-        onPageChange // TODO add pagination info
+        onPageChange,
+        pageState
     }: {
         products: PrintModelCard[],
         onProductClick: Function,
         cachedImages: { [url in string]: HTMLImageElement },
-        onPageChange: Function
+        onPageChange: Function,
+        pageState: PageState
     }
 ) =>
     <div className="row">
@@ -23,9 +28,9 @@ const PrintModelCardsComponent = (
         ))}
         <div>
             <Pagination
-                itemsCount={6}
-                maxItemsPerPage={2}
-                currentPage={1}
+                itemsCount={pageState.size}
+                maxItemsPerPage={DEFAULT_PAGE_SIZE}
+                currentPage={pageState.currentPage}
                 onPageChange={onPageChange}
             />
         </div>

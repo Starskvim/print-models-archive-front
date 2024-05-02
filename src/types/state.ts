@@ -10,6 +10,7 @@ export interface State {
   products: PrintModelCard[];
   searchQuery: string;
   showAdditionalImage: boolean;
+  pageState: PageState
 }
 
 export const initialState: State = {
@@ -21,6 +22,12 @@ export const initialState: State = {
   products: [],
   searchQuery: '',
   showAdditionalImage: false,
+  pageState: {
+    currentPage: 1,
+    searchQuery: undefined,
+    totalPages: 3,
+    size: 2
+  }
 };
 
 export interface SingleState {
@@ -30,3 +37,10 @@ export interface SingleState {
 export const initialSingleState: SingleState = {
   product: null,
 };
+
+export interface PageState {
+  currentPage: number;
+  searchQuery: string | undefined;
+  totalPages: number | undefined;
+  size: number
+}
