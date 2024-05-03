@@ -21,7 +21,11 @@ const Header = () => {
                                 Models
                             </NavLink>
                         </li>
-
+                        <li>
+                            <NavLink to="/admin" className="navbar-link ">
+                                Admin
+                            </NavLink>
+                        </li>
                     </ul>
                 </div>
             </Nav>
@@ -30,10 +34,10 @@ const Header = () => {
 };
 
 const MainHeader = styled.header`
-  padding: 0 4.8rem;
-  height: 10rem;
-  background-color: ${({ theme }) => theme.colors.bg};
-  display: flex;
+    padding: 0 4.8rem;
+    height: 10rem;
+    background-color: ${({theme}) => theme.colors.bg};
+    display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;

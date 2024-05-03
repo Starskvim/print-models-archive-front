@@ -1,7 +1,7 @@
-import {PrintModelCard} from "./PrintModelCard";
+import {PrintModel} from "./PrintModel";
 
 export interface PrintModelResponse {
 
-    model: PrintModelCard
+    model: PrintModel
 
 }

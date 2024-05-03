@@ -19,6 +19,7 @@ import theme from "./styles/theme";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import {GlobalStyle} from "./styles/GlobalStyle";
+import {AdminPage} from "./pages/AdminPage";
 
 
 const ModelPageWrapper = () => {
@@ -38,6 +39,7 @@ class App extends React.Component {
                         <Route path="/" element={<ModelsPage/>}/>
                         <Route path="/models" element={<ModelsPage/>}/>
                         <Route path="/models/:id" element={<ModelPageWrapper/>}/>
+                        <Route path="/admin" element={<AdminPage/>}/>
                         {/*<Route path="/models" component={AboutPage} />*/}
                     </Routes>
                     <Footer/>

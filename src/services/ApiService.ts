@@ -5,8 +5,20 @@ async function get(url: string) {
   return res.data;
 }
 
+async function post(url: string) {
+  const res = await axios.post(url) as AxiosResponse;
+  return res.data;
+}
+
+async function del(url: string) {
+  const res = await axios.delete(url) as AxiosResponse;
+  return res.data;
+}
+
 const exports = {
   get,
+  post,
+  del
 };
 
 export default exports;

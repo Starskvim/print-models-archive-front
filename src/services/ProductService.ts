@@ -1,9 +1,9 @@
 import http from './ApiService';
 import { PrintModelsResponse } from '../types/PrintModelsResponse';
-import { PrintModelCard } from '../types/PrintModelCard';
 import {PrintModelResponse} from "../types/PrintModelResponse";
+import {PrintModel} from "../types/PrintModel";
 
-const API = "http://localhost:8081/archive/api/models"
+const API_MODELS = "http://localhost:8081/archive/api/models"
 
 // http://localhost:8081/archive/api/models
 // ?page=0
@@ -13,13 +13,8 @@ const API = "http://localhost:8081/archive/api/models"
 // &category=test
 // &rate=5
 
-export async function getModelCards(): Promise<PrintModelCard[]> {
-  const input = await http.get(API) as PrintModelsResponse
-  return input.models
-}
-
-export async function getModelCard(id: String): Promise<PrintModelCard> {
-  const requestUrl = API + "/" + id
+export async function getModelCard(id: String): Promise<PrintModel> {
+  const requestUrl = API_MODELS + "/" + id
   console.log("before requestUrl - " + requestUrl)
   const input = await http.get(requestUrl) as PrintModelResponse
   console.log("after requestUrl - " + input.model.modelName)
@@ -50,10 +45,10 @@ export async function fetchModelCards(
   if (category != undefined) {
     params.append('category', category);
   }
-  if (rate != undefined) {
+  if (rate != undefined && rate !== 'all') {
     params.append('rate', rate);
   }
-  const url = API + "?" + params.toString();
+  const url = API_MODELS + "?" + params.toString();
   console.log("fetchModelCards url - " + url)
   const input = await http.get(url) as PrintModelsResponse
   return input

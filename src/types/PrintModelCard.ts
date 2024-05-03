@@ -3,7 +3,7 @@ export interface PrintModelCard {
     preview: string,
     modelName: string,
     rate: number,
-    nsfw: boolean,
+    nsfw: string,
     images: string[],
     addedAt: string
 }

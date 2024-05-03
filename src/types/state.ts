@@ -1,5 +1,6 @@
 // import { Product } from "./product";
 import {PrintModelCard} from "./PrintModelCard";
+import {PrintModel} from "./PrintModel";
 
 export interface State {
   additionalImageUrls: string[];
@@ -23,15 +24,16 @@ export const initialState: State = {
   searchQuery: '',
   showAdditionalImage: false,
   pageState: {
-    currentPage: 1,
+    currentPage: 0,
     searchQuery: undefined,
     totalPages: 3,
-    size: 2
+    size: 2,
+    rate: 'all'
   }
 };
 
 export interface SingleState {
-  product: PrintModelCard | null;
+  product: PrintModel | null;
 }
 
 export const initialSingleState: SingleState = {
@@ -43,4 +45,5 @@ export interface PageState {
   searchQuery: string | undefined;
   totalPages: number | undefined;
   size: number
+  rate: string
 }

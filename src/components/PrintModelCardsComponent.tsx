@@ -21,11 +21,14 @@ const PrintModelCardsComponent = (
     }
 ) =>
     <div className="row">
-        {products.map(product => (
-            <div className="col my-3" key={product.id} onClick={() => onProductClick(product)}>
-                <PrintModelCardComponent product={product} cachedImages={cachedImages}/>
-            </div>
-        ))}
+        {
+            products?.map(product => (
+                    <div className="col my-3" key={product.id} onClick={() => onProductClick(product)}>
+                        <PrintModelCardComponent product={product} cachedImages={cachedImages}/>
+                    </div>
+                )
+            )
+        }
         <div>
             <Pagination
                 itemsCount={pageState.size}
