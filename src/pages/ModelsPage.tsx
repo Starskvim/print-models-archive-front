@@ -7,7 +7,6 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import PrintModelCardsComponent, {DEFAULT_PAGE_SIZE} from "../components/PrintModelCardsComponent";
 import ImageOverlay from "../components/ImageOverlay";
 import RateFilterComponent from "../components/RateFilterComponent";
-import {PrintModelsResponse} from "../types/PrintModelsResponse";
 
 export class ModelsPage extends Component {
 
@@ -23,9 +22,16 @@ export class ModelsPage extends Component {
             undefined,
             this.state.pageState.rate
         );
-        this.state.pageState.totalPages = response.totalPages
-        this.state.pageState.size = response.totalElements
-        this.setState({products: response.models});
+        // TODO
+        this.setState(prevState => ({
+            ...initialState,
+            pageState: {
+                ...initialState.pageState,
+                totalPages: response.totalPages,
+                size: response.totalElements
+            },
+            products: response.models
+        }));
     }
 
     handleSaleFilter = (filterBySale: boolean) => {
@@ -43,49 +49,86 @@ export class ModelsPage extends Component {
     };
 
     handlePageClick = async (target: number) => {
+        // this.state.pageState.currentPage = target;
+        // this.state.pageState.totalPages = response.totalPages
+        // this.state.pageState.size = response.totalElements
+        // this.setState({products: response.models});
         const response = await fetchModelCards(
             (target - 1).toString(),
             DEFAULT_PAGE_SIZE.toString(),
             undefined,
             this.state.pageState.searchQuery,
             undefined,
-            undefined
+            this.state.pageState.rate
         );
-        this.state.pageState.currentPage = target;
-        this.state.pageState.totalPages = response.totalPages
-        this.state.pageState.size = response.totalElements
-        this.setState({products: response.models});
+        this.setState(prevState => ({
+            pageState: {
+                searchQuery: this.state.pageState.searchQuery,
+                currentPage: target,
+                totalPages: response.totalPages,
+                size: response.totalElements,
+                rate: this.state.pageState.rate
+            },
+            products: response.models
+        }));
         console.log("fetchModelCards" + JSON.stringify(response));
     };
 
     handleRateFilter = async (rate: string) => {
-        this.state.pageState.rate = rate
-        const response = await this.fetchStateUpdates()
-        this.state.pageState.totalPages = response.totalPages
-        this.state.pageState.size = response.totalElements
-        this.setState({products: response.models});
-        console.log("rate", this.state.pageState.rate);
-    };
-
-    handleSearch = async (query: string) => {
-        this.state.pageState.searchQuery = query
-        const response = await this.fetchStateUpdates()
-        this.state.pageState.totalPages = response.totalPages
-        this.state.pageState.size = response.totalElements
-        this.setState({products: response.models});
-        console.log("query", this.state.pageState.searchQuery);
-    };
-
-    async fetchStateUpdates(): Promise<PrintModelsResponse> {
-        return fetchModelCards(
-            this.state.pageState.currentPage.toString(),
+        // this.state.pageState.rate = rate
+        // this.state.pageState.currentPage = 0
+        // this.state.pageState.totalPages = response.totalPages
+        // this.state.pageState.size = response.totalElements
+        // this.setState({products: response.models});
+        const response = await fetchModelCards(
+            "0",
             DEFAULT_PAGE_SIZE.toString(),
             undefined,
             this.state.pageState.searchQuery,
             undefined,
+            rate
+        );
+        this.setState(prevState => ({
+            ...initialState, // todo not work
+            pageState: {
+                ...initialState.pageState, // todo not work
+                searchQuery: this.state.pageState.searchQuery,
+                totalPages: response.totalPages,
+                size: response.totalElements,
+                rate: rate
+            },
+            products: response.models
+        }));
+        console.log("rate", this.state.pageState.rate);
+    };
+
+    handleSearch = async (query: string) => {
+        // this.state.pageState.searchQuery = query
+        // this.state.pageState.currentPage = 0
+        // const response = await this.fetchStateUpdates()
+        // this.state.pageState.totalPages = response.totalPages
+        // this.state.pageState.size = response.totalElements
+        // this.setState({products: response.models});
+        const response = await fetchModelCards(
+            "0",
+            DEFAULT_PAGE_SIZE.toString(),
+            undefined,
+            query,
+            undefined,
             this.state.pageState.rate
         );
-    }
+        this.setState(prevState => ({
+            pageState: {
+                searchQuery: query,
+                currentPage: "0",
+                totalPages: response.totalPages,
+                size: response.totalElements,
+                rate: this.state.pageState.rate
+            },
+            products: response.models
+        }));
+        console.log("query", this.state.pageState.searchQuery);
+    };
 
     render() {
         const {

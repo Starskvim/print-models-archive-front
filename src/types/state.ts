@@ -26,7 +26,7 @@ export const initialState: State = {
   pageState: {
     currentPage: 0,
     searchQuery: undefined,
-    totalPages: 3,
+    totalPages: undefined,
     size: 2,
     rate: 'all'
   }

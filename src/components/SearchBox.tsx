@@ -10,7 +10,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ value, onChange }) => {
 
     const [inputValue, setInputValue] = useState(value);
 
-    const debouncedOnChange = debounce(onChange, 400);
+    const debouncedOnChange = debounce(onChange, 300);
 
     useEffect(() => {
         setInputValue(value);
