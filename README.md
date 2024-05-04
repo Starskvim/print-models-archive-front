@@ -2,6 +2,7 @@
 
 docker build -t starskvim/starskvim-archive-front .
 docker run -p 3000:3000 starskvim-archive-front
+docker push starskvim/starskvim-archive-front
 
 ## Install Yarn
 
