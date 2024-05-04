@@ -7,6 +7,7 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import PrintModelCardsComponent, {DEFAULT_PAGE_SIZE} from "../components/PrintModelCardsComponent";
 import ImageOverlay from "../components/ImageOverlay";
 import RateFilterComponent from "../components/RateFilterComponent";
+import {PAGE_SIZE} from "../configuration/Config";
 
 export class ModelsPage extends Component {
 
@@ -16,7 +17,7 @@ export class ModelsPage extends Component {
     async componentDidMount() {
         const response = await fetchModelCards(
             this.state.pageState.currentPage.toString(),
-            DEFAULT_PAGE_SIZE.toString(),
+            PAGE_SIZE.toString(),
             undefined,
             this.state.pageState.searchQuery,
             undefined,
@@ -55,7 +56,7 @@ export class ModelsPage extends Component {
         // this.setState({products: response.models});
         const response = await fetchModelCards(
             (target - 1).toString(),
-            DEFAULT_PAGE_SIZE.toString(),
+            PAGE_SIZE.toString(),
             undefined,
             this.state.pageState.searchQuery,
             undefined,
@@ -82,7 +83,7 @@ export class ModelsPage extends Component {
         // this.setState({products: response.models});
         const response = await fetchModelCards(
             "0",
-            DEFAULT_PAGE_SIZE.toString(),
+            PAGE_SIZE.toString(),
             undefined,
             this.state.pageState.searchQuery,
             undefined,
@@ -111,7 +112,7 @@ export class ModelsPage extends Component {
         // this.setState({products: response.models});
         const response = await fetchModelCards(
             "0",
-            DEFAULT_PAGE_SIZE.toString(),
+            PAGE_SIZE.toString(),
             undefined,
             query,
             undefined,
@@ -150,18 +151,6 @@ export class ModelsPage extends Component {
                         rate={this.state.pageState.rate}
                         onChange={this.handleRateFilter}
                     />
-                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '150px'}}>
-                        <ToggleButton
-                            id="toggle-check"
-                            type="checkbox"
-                            variant="outline-primary"
-                            checked={filterBySale}
-                            value="1"
-                            onChange={(e) => this.handleSaleFilter(e.currentTarget.checked)}
-                        >
-                            Filter by Sale
-                        </ToggleButton>
-                    </div>
                 </div>
                 <PrintModelCardsComponent
                     products={allProducts}

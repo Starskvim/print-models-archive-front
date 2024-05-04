@@ -1,6 +1,5 @@
 import http from './ApiService';
-
-const API_ADMIN = "http://localhost:8081/archive/api/admin"
+import {API_ADMIN} from "../configuration/Config";
 
 export async function createArchive() {
     const input = await http.post(API_ADMIN + "/create-archive")

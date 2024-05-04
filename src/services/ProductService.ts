@@ -2,8 +2,7 @@ import http from './ApiService';
 import { PrintModelsResponse } from '../types/PrintModelsResponse';
 import {PrintModelResponse} from "../types/PrintModelResponse";
 import {PrintModel} from "../types/PrintModel";
-
-const API_MODELS = "http://localhost:8081/archive/api/models"
+import {API_MODELS} from "../configuration/Config";
 
 // http://localhost:8081/archive/api/models
 // ?page=0

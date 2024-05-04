@@ -1,7 +1,7 @@
 ## Docker
 
-docker build -t archive-front .
-docker run -p 3000:3000 archive-front
+docker build -t starskvim-archive-front .
+docker run -p 3000:3000 starskvim-archive-front
 
 ## Install Yarn
 
