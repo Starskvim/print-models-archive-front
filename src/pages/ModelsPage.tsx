@@ -1,10 +1,10 @@
-import React, {Component} from "react";
+import React, {Component, useEffect} from "react";
 import {initialState, State} from "../types/state";
 import {fetchModelCards} from "../services/ProductService";
 import {PrintModelCard} from "../types/PrintModelCard";
 import SearchBox from "../components/SearchBox";
 import ToggleButton from "react-bootstrap/ToggleButton";
-import PrintModelCardsComponent, {DEFAULT_PAGE_SIZE} from "../components/PrintModelCardsComponent";
+import PrintModelCardsComponent, {DEFAULT_PAGE_SIZE} from "../components/card/PrintModelCardsComponent";
 import ImageOverlay from "../components/ImageOverlay";
 import RateFilterComponent from "../components/RateFilterComponent";
 import {PAGE_SIZE} from "../configuration/Config";
@@ -35,9 +35,9 @@ export class ModelsPage extends Component {
         }));
     }
 
-    handleSaleFilter = (filterBySale: boolean) => {
-        this.setState({filterBySale, currentPage: 1});
-    };
+    async componentDidUpdate() {
+        window.scrollTo(0, 0);
+    }
 
     handleProductClick = (product: PrintModelCard) => {
         const urls = product.images;
@@ -138,9 +138,7 @@ export class ModelsPage extends Component {
             showAdditionalImage,
             products: allProducts
         } = this.state;
-
         console.log("render - rate", this.state.pageState.rate);
-
         return (
             <div className="container">
                 <div className="row">

@@ -33,11 +33,11 @@ export const initialState: State = {
 };
 
 export interface SingleState {
-  product: PrintModel | null;
+  product: PrintModel | undefined;
 }
 
 export const initialSingleState: SingleState = {
-  product: null,
+  product: undefined,
 };
 
 export interface PageState {

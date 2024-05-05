@@ -1,8 +1,8 @@
-import {PrintModelCard} from "../types/PrintModelCard";
+import {PrintModelCard} from "../../types/PrintModelCard";
 import PrintModelCardComponent from "./PrintModelCardComponent";
-import Pagination from "./Pagination";
-import {PageState} from "../types/state";
-import {PAGE_SIZE} from "../configuration/Config";
+import Pagination from "../Pagination";
+import {PageState} from "../../types/state";
+import {PAGE_SIZE} from "../../configuration/Config";
 
 export const DEFAULT_PAGE_SIZE = 2
 

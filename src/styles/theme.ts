@@ -9,7 +9,8 @@ const theme : DefaultTheme = {
         helper: "#8490ff",
 
         bg: "#F6F8FA",
-        footer_bg: "#350a14",
+        footer_bg: "#6d96ea",
+        header_bg: "#6d96ea",
         btn: "rgb(98 84 243)",
         border: "rgba(98, 84, 243, 0.5)",
         hr: "#ffffff",

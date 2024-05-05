@@ -11,7 +11,6 @@ const Pagination = ({itemsCount, maxItemsPerPage, currentPage, onPageChange}:
     const pagesCount = Math.ceil(itemsCount / maxItemsPerPage);
     if (pagesCount === 1) return null;
     const pages = preparePages(currentPage, pagesCount);
-
     return (
         <nav>
             <ul className="pagination mx-auto" style={{width: 'fit-content'}}>

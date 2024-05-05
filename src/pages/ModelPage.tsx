@@ -31,7 +31,7 @@ export class ModelPage extends Component<{ id: string }> {
                 </Helmet>
                 <div>
                     <div className="col my-3">
-                        <PrintModelComponent product={product}/>
+                        {product ? <PrintModelComponent product={product} /> : <p>Error</p>}
                     </div>
                     {
                         product?.oths.map(oth => (

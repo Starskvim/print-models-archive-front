@@ -1,9 +1,12 @@
-import {PrintModelCard} from "../types/PrintModelCard";
-import AsyncImage from './AsyncImage';
+import {PrintModelCard} from "../../types/PrintModelCard";
+import AsyncImage from '../AsyncImage';
 import {NavLink} from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
-import {toStringDate} from "../utils/DateUtils";
+import {toStringDate} from "../../utils/DateUtils";
+import StarRatingComponent from "./StarRatingComponent";
+import AdultContentIndicatorComponent from "./AdultContentIndicatorComponent";
+import { DivRowStyled } from "../../styles/DivRowStyled";
 
 const PrintModelCardComponent = (
     {
@@ -25,38 +28,40 @@ const PrintModelCardComponent = (
             preloadBgColor={'hsl(0, 0%, 75%)'}
         />
         <div className="card-body">
-            <Nav>
+            <NavStyled>
                 <NavLink to={`/models/${product.id}`} className="navbar-link">
                     {product.modelName}
                 </NavLink>
-            </Nav>
-            {/*<h5 className="card-title">{product.modelName}</h5>*/}
-            {/*<p className="card-text">{product.modelName}</p>*/}
+            </NavStyled>
             <p className="card-text">Id - {product.id}</p>
             <p className="card-text">Added at - {toStringDate(product?.addedAt!!)}</p>
-            <p className="card-text">NSFW - {product?.nsfw.toString()}</p>
-            <p className="card-text">Rate - {product.rate}</p>
-            {/*<p className="card-text" style={{textDecoration: 'line-through'}}>{product.id}</p>*/}
-            {/*<p className="card-text">{product.id}</p>*/}
+            <DivRowStyled>
+                <div className="content-row">
+                    <StarRatingComponent selectedStars={product.rate}/>
+                    <AdultContentIndicatorComponent isVisible={product?.nsfw}/>
+                </div>
+            </DivRowStyled>
         </div>
     </div>;
 
 
-const Nav = styled.nav`
-
+const NavStyled = styled.nav`
+    
     .navbar-link {
         &:link,
         &:visited {
+            text-align: center;
             display: inline-block;
             text-decoration: none;
             font-size: 1.8rem;
             font-weight: 500;
-            // color: ${({theme}) => theme.colors.black};
+                // color: ${({theme}) => theme.colors.black};
             transition: color 0.3s linear;
         }
 
         &:hover,
         &:active {
+            text-align: center;
             color: ${({theme}) => theme.colors.helper};
         }
     }

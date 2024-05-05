@@ -3,12 +3,15 @@ import AsyncImage from './AsyncImage';
 import styled from "styled-components";
 import React from "react";
 import {toStringDate} from "../utils/DateUtils";
+import {DivRowStyled} from "../styles/DivRowStyled";
+import StarRatingComponent from "./card/StarRatingComponent";
+import AdultContentIndicatorComponent from "./card/AdultContentIndicatorComponent";
 
 const PrintModelComponent = (
     {
         product
     }: {
-        product: PrintModel | null,
+        product: PrintModel,
     }
 ) =>
     <ModelStyled>
@@ -23,11 +26,15 @@ const PrintModelComponent = (
                 preloadBgColor={'hsl(0, 0%, 75%)'}
             />
             <div className="card-body">
-                <h5 className="card-title">{product?.modelName}</h5>
-                <p className="card-text">Id - {product?.id}</p>
-                <p className="card-text">Added at - { toStringDate(product?.addedAt!!) }</p>
-                <p className="card-text">NSFW - {product?.nsfw.toString()}</p>
-                <p className="card-text">Rate - {product?.rate}</p>
+                <h5 className="card-title">{product.modelName}</h5>
+                <p className="card-text">Id - {product.id}</p>
+                <p className="card-text">Added at - { toStringDate(product.addedAt!!) }</p>
+                <DivRowStyled>
+                    <div className="content-row">
+                        <StarRatingComponent selectedStars={product.rate}/>
+                        <AdultContentIndicatorComponent isVisible={product.nsfw}/>
+                    </div>
+                </DivRowStyled>
             </div>
         </div>
         ;

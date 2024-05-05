@@ -4,7 +4,7 @@ export interface PrintModel {
     preview: string,
     modelName: string,
     rate: number,
-    nsfw: string,
+    nsfw: boolean,
     categories: string[]
     oths: PrintModelOth[]
     zips: PrintModelZip[]
