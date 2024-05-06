@@ -1,6 +1,6 @@
 import {Component} from "react";
 import styled from "styled-components";
-import {createArchive, clearArchive, checkFolders} from "../services/AdminService";
+import {createArchive, updateArchive, clearArchive, checkFolders} from "../services/AdminService";
 import { AdminButton } from "../styles/AdminButton";
 
 
@@ -12,14 +12,17 @@ export class AdminPage extends Component {
             <AdminStyled>
                 <div >
                     <nav>
-                        <AdminButton as="button" onClick={createArchive}>
-                            Create
+                        <AdminButton as="button" onClick={updateArchive}>
+                            Update
+                        </AdminButton>
+                        <AdminButton as="button" onClick={checkFolders}>
+                            Check folders
                         </AdminButton>
                         <AdminButton as="button" onClick={clearArchive}>
                             Clear
                         </AdminButton>
-                        <AdminButton as="button" onClick={checkFolders}>
-                            Check folders
+                        <AdminButton as="button" onClick={createArchive}>
+                            Create
                         </AdminButton>
                     </nav>
                 </div>

@@ -6,6 +6,11 @@ export async function createArchive() {
     console.log("createArchive - " + input)
 }
 
+export async function updateArchive() {
+    const input = await http.post(API_ADMIN + "/update-archive")
+    console.log("update-archive - " + input)
+}
+
 export async function clearArchive() {
     const input = await http.del(API_ADMIN + "/clear-archive")
     console.log("clearArchive - " + input)
