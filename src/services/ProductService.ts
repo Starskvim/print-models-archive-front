@@ -2,7 +2,8 @@ import http from './ApiService';
 import { PrintModelsResponse } from '../types/PrintModelsResponse';
 import {PrintModelResponse} from "../types/PrintModelResponse";
 import {PrintModel} from "../types/PrintModel";
-import {API_MODELS} from "../configuration/Config";
+import {API_MODELS, IMG_S3_URL} from "../configuration/Config";
+import {PrintModelCard} from "../types/PrintModelCard";
 
 // http://localhost:8081/archive/api/models
 // ?page=0
@@ -12,11 +13,15 @@ import {API_MODELS} from "../configuration/Config";
 // &category=test
 // &rate=5
 
+// http://127.0.0.1:8081/
+// http://127.0.0.1:9099/print-model-image/+M18
+
 export async function getModelCard(id: String): Promise<PrintModel> {
   const requestUrl = API_MODELS + "/" + id
   console.log("before requestUrl - " + requestUrl)
   const input = await http.get(requestUrl) as PrintModelResponse
   console.log("after requestUrl - " + input.model.modelName)
+  prepareModelImgUrls(input.model)
   return input.model
 }
 
@@ -50,5 +55,19 @@ export async function fetchModelCards(
   const url = API_MODELS + "?" + params.toString();
   console.log("fetchModelCards url - " + url)
   const input = await http.get(url) as PrintModelsResponse
+  prepareCardImgUrls(input.models)
   return input
+}
+
+function prepareModelImgUrls(model: PrintModel) {
+  model.preview = IMG_S3_URL + model?.preview;
+  model.oths.forEach((oth) => {
+    oth.preview = IMG_S3_URL + oth.preview;
+  })
+}
+
+function prepareCardImgUrls(models:  PrintModelCard[] | undefined) {
+  models?.forEach((model) => {
+    model.preview = IMG_S3_URL + model.preview;
+  })
 }

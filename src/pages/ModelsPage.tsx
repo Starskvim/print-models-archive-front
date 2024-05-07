@@ -1,5 +1,5 @@
 import React, {Component, useEffect} from "react";
-import {initialState, State} from "../types/state";
+import {InitialState, State} from "../types/state";
 import {fetchModelCards} from "../services/ProductService";
 import {PrintModelCard} from "../types/PrintModelCard";
 import SearchBox from "../components/SearchBox";
@@ -9,25 +9,29 @@ import ImageOverlay from "../components/ImageOverlay";
 import RateFilterComponent from "../components/RateFilterComponent";
 import {PAGE_SIZE} from "../configuration/Config";
 
-export class ModelsPage extends Component {
+export class ModelsPage extends Component<{ categoryName: string | undefined }> {
 
-    state: State = initialState;
+    state: State = InitialState;
     cachedImages: { [url in string]: HTMLImageElement } = {};
 
     async componentDidMount() {
+        const {categoryName} = this.props;
+
+        console.log("componentDidMount - " + categoryName);
+
         const response = await fetchModelCards(
             this.state.pageState.currentPage.toString(),
             PAGE_SIZE.toString(),
             undefined,
             this.state.pageState.searchQuery,
-            undefined,
+            categoryName,
             this.state.pageState.rate
         );
-        // TODO
         this.setState(prevState => ({
-            ...initialState,
+            ...InitialState,
             pageState: {
-                ...initialState.pageState,
+                ...InitialState.pageState,
+                categoryName: categoryName,
                 totalPages: response.totalPages,
                 size: response.totalElements
             },
@@ -35,6 +39,7 @@ export class ModelsPage extends Component {
         }));
     }
 
+    // TODO category update?
     async componentDidUpdate() {
         window.scrollTo(0, 0);
     }
@@ -50,21 +55,18 @@ export class ModelsPage extends Component {
     };
 
     handlePageClick = async (target: number) => {
-        // this.state.pageState.currentPage = target;
-        // this.state.pageState.totalPages = response.totalPages
-        // this.state.pageState.size = response.totalElements
-        // this.setState({products: response.models});
         const response = await fetchModelCards(
             (target - 1).toString(),
             PAGE_SIZE.toString(),
             undefined,
             this.state.pageState.searchQuery,
-            undefined,
+            this.state.pageState.categoryName,
             this.state.pageState.rate
         );
         this.setState(prevState => ({
             pageState: {
                 searchQuery: this.state.pageState.searchQuery,
+                categoryName: this.state.pageState.categoryName,
                 currentPage: target,
                 totalPages: response.totalPages,
                 size: response.totalElements,
@@ -76,24 +78,20 @@ export class ModelsPage extends Component {
     };
 
     handleRateFilter = async (rate: string) => {
-        // this.state.pageState.rate = rate
-        // this.state.pageState.currentPage = 0
-        // this.state.pageState.totalPages = response.totalPages
-        // this.state.pageState.size = response.totalElements
-        // this.setState({products: response.models});
         const response = await fetchModelCards(
             "0",
             PAGE_SIZE.toString(),
             undefined,
             this.state.pageState.searchQuery,
-            undefined,
+            this.state.pageState.categoryName,
             rate
         );
         this.setState(prevState => ({
-            ...initialState, // todo not work
+            ...InitialState, // todo not work
             pageState: {
-                ...initialState.pageState, // todo not work
+                ...InitialState.pageState, // todo not work
                 searchQuery: this.state.pageState.searchQuery,
+                categoryName: this.state.pageState.categoryName,
                 totalPages: response.totalPages,
                 size: response.totalElements,
                 rate: rate
@@ -104,23 +102,18 @@ export class ModelsPage extends Component {
     };
 
     handleSearch = async (query: string) => {
-        // this.state.pageState.searchQuery = query
-        // this.state.pageState.currentPage = 0
-        // const response = await this.fetchStateUpdates()
-        // this.state.pageState.totalPages = response.totalPages
-        // this.state.pageState.size = response.totalElements
-        // this.setState({products: response.models});
         const response = await fetchModelCards(
             "0",
             PAGE_SIZE.toString(),
             undefined,
             query,
-            undefined,
+            this.state.pageState.categoryName,
             this.state.pageState.rate
         );
         this.setState(prevState => ({
             pageState: {
                 searchQuery: query,
+                categoryName: this.state.pageState.categoryName,
                 currentPage: "0",
                 totalPages: response.totalPages,
                 size: response.totalElements,
@@ -139,6 +132,7 @@ export class ModelsPage extends Component {
             products: allProducts
         } = this.state;
         console.log("render - rate", this.state.pageState.rate);
+        console.log("render - category", this.state.pageState.categoryName);
         return (
             <div className="container">
                 <div className="row">

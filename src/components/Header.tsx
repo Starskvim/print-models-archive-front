@@ -1,11 +1,27 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {NavLink} from "react-router-dom";
 import styled from "styled-components";
 
-import {categories} from "./catalog/Test";
 import DropdownMenuComponent from "./catalog/DropdownMenuComponent";
+import {getCatalog} from "../services/CatalogService";
+import {Catalog, Category} from "../types/catalog/Catalog";
 
 const Header = () => {
+
+    const [catalog, setCatalog] = useState<Category[]>([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const catalog: Catalog = await getCatalog();
+                setCatalog(catalog.catalog);
+            } catch (error) {
+                console.error("Failed to fetch categories:", error);
+            }
+        };
+        fetchCategories();
+    }, []);
+
     return (
         <MainHeader>
 
@@ -13,7 +29,7 @@ const Header = () => {
                 <NavLink to="/">
                     <img src="./logo512.png" className="logo" alt="my logo img"/>
                 </NavLink>
-                <DropdownMenuComponent categories={categories}/>
+                <DropdownMenuComponent categories={catalog}/>
             </div>
 
             <Nav>

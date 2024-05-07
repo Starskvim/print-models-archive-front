@@ -14,7 +14,7 @@ export interface State {
   pageState: PageState
 }
 
-export const initialState: State = {
+export const InitialState: State = {
   additionalImageUrls: [],
   currentPage: 1,
   filterBySale: false,
@@ -24,8 +24,9 @@ export const initialState: State = {
   searchQuery: '',
   showAdditionalImage: false,
   pageState: {
-    currentPage: 0,
     searchQuery: undefined,
+    categoryName: undefined,
+    currentPage: 0,
     totalPages: undefined,
     size: 2,
     rate: 'all'
@@ -36,13 +37,14 @@ export interface SingleState {
   product: PrintModel | undefined;
 }
 
-export const initialSingleState: SingleState = {
+export const InitialSingleState: SingleState = {
   product: undefined,
 };
 
 export interface PageState {
-  currentPage: number;
+  categoryName: string | undefined,
   searchQuery: string | undefined;
+  currentPage: number;
   totalPages: number | undefined;
   size: number
   rate: string

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import styled from "styled-components";
-import {initialSingleState, initialState, SingleState, State} from "../types/state";
+import {InitialSingleState, InitialState, SingleState, State} from "../types/state";
 import {getModelCard} from "../services/ProductService";
 import PrintModelComponent from "../components/PrintModelComponent";
 import AsyncImage from "../components/AsyncImage";
@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet";
 
 export class ModelPage extends Component<{ id: string }> {
 
-    state: SingleState = initialSingleState;
+    state: SingleState = InitialSingleState;
 
     async componentDidMount() {
         try {

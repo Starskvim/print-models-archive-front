@@ -2,15 +2,7 @@ import React, {Component} from 'react';
 // import Dropdown from 'react-bootstrap/Dropdown';
 // import DropdownButton from 'react-bootstrap/DropdownButton';
 // import ToggleButton from 'react-bootstrap/ToggleButton';
-//
-// import ImageOverlay from './components/ImageOverlay';
-// import Pagination from './components/Pagination';
-// import PrintModelCardsComponent from './components/PrintModelCardsComponent';
-// import SearchBox from './components/SearchBox';
-// import { getCards } from './services/product';
-// import {PrintModelCard} from "./types/PrintModelCard";
-// import { initialState, State } from './types/state';
-// import { paginate } from './utils/paginate';
+
 import {ModelsPage} from './pages/ModelsPage'
 import {ModelPage} from './pages/ModelPage'
 import {BrowserRouter as Router, Routes, Route, useParams} from 'react-router-dom';
@@ -21,13 +13,19 @@ import Footer from "./components/Footer";
 import {GlobalStyle} from "./styles/GlobalStyle";
 import {AdminPage} from "./pages/AdminPage";
 
-
 const ModelPageWrapper = () => {
     const {id} = useParams<{ id?: string }>();
-    // @ts-ignore
+    // @ts-ignore TODO
     return <ModelPage id={id}/>;
 };
 
+const ModelsPageWrapper = () => {
+    const {categoryName} = useParams<{ categoryName?: string }>();
+    console.log("ModelsPageWrapper categoryName - " + categoryName);
+    return <ModelsPage categoryName={categoryName}/>;
+};
+
+// TODO main page
 class App extends React.Component {
     render() {
         return (
@@ -36,8 +34,9 @@ class App extends React.Component {
                     <GlobalStyle/>
                     <Header/>
                     <Routes>
-                        <Route path="/" element={<ModelsPage/>}/>
-                        <Route path="/models" element={<ModelsPage/>}/>
+                        <Route path="/" element={<ModelsPageWrapper/>}/>
+                        <Route path="/models" element={<ModelsPageWrapper/>}/>
+                        <Route path="/models/category/:categoryName" element={<ModelsPageWrapper/>}/>
                         <Route path="/models/:id" element={<ModelPageWrapper/>}/>
                         <Route path="/admin" element={<AdminPage/>}/>
                         {/*<Route path="/models" component={AboutPage} />*/}
