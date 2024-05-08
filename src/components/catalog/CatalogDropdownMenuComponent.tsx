@@ -42,7 +42,9 @@ const CatalogDropdownMenu: FC<DropdownMenuProps> = () => {
 export default CatalogDropdownMenu;
 
 const Styled = styled.div`
+    
     .dropdownMenu {
+        margin-left: 10vmin;
         position: relative; /* Это позволяет абсолютно позиционировать выпадающий список внутри блока */
         z-index: 1000; /* Это значение z-index гарантирует, что меню будет наверху других элементов */
     }

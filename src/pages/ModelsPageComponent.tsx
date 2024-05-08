@@ -23,7 +23,8 @@ const ModelsPageComponent: React.FC<ModelsPageProps> = ({}) => {
         categoryName,
         globalState.currentPage,
         globalState.rate,
-        globalState.searchQuery
+        globalState.searchQuery,
+        globalState.nsfwOnly
     ]); // hook on state
 
     const updateModelCards = async () => {
@@ -33,7 +34,8 @@ const ModelsPageComponent: React.FC<ModelsPageProps> = ({}) => {
             undefined,
             globalState.searchQuery,
             categoryName,
-            globalState.rate
+            globalState.rate,
+            globalState.nsfwOnly
         );
         updateGlobalState(
             {

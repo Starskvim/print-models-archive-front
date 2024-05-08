@@ -28,10 +28,11 @@ export async function getModelCard(id: String): Promise<PrintModel> {
 export async function fetchModelCards(
     page: number | undefined,
     size: number | undefined,
-    sort: string | undefined,
-    name: string | undefined,
-    category: string | undefined,
-    rate : string | undefined
+    sort: string | undefined = undefined,
+    name: string | undefined = undefined,
+    category: string | undefined = undefined,
+    rate : string | undefined = undefined,
+    nsfwOnly : boolean | undefined = undefined
 ): Promise<PrintModelsResponse> {
   const params = new URLSearchParams();
   if (page !== undefined) {
@@ -51,6 +52,9 @@ export async function fetchModelCards(
   }
   if (rate !== undefined && rate !== 'all') {
     params.append('rate', rate);
+  }
+  if (nsfwOnly !== undefined && nsfwOnly) {
+    params.append('nsfwOnly', String(nsfwOnly));
   }
   const url = API_MODELS + "?" + params.toString();
   console.log("fetchModelCards url - " + url)

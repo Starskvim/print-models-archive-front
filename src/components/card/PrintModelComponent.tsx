@@ -5,7 +5,7 @@ import React from "react";
 import {toStringDate} from "../../utils/DateUtils";
 import {DivRowStyled} from "../../styles/DivRowStyled";
 import StarRatingComponent from "./StarRatingComponent";
-import AdultContentIndicatorComponent from "./AdultContentIndicatorComponent";
+import NSFWIndicatorComponent from "./NSFWIndicatorComponent";
 import { Link } from 'react-router-dom';
 
 const PrintModelComponent = (
@@ -40,7 +40,7 @@ const PrintModelComponent = (
                 <DivRowStyled>
                     <div className="content-row">
                         <StarRatingComponent selectedStars={product.rate}/>
-                        <AdultContentIndicatorComponent isVisible={product.nsfw}/>
+                        <NSFWIndicatorComponent isVisible={product.nsfw}/>
                     </div>
                 </DivRowStyled>
             </div>

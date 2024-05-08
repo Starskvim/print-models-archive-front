@@ -5,7 +5,9 @@ import styled from "styled-components";
 import DropdownMenuComponent from "./catalog/CatalogDropdownMenuComponent";
 import {useAppContext} from "../state/AppContext";
 import SearchBox from "./SearchBox";
-import RateFilterComponent from "./RateFilterComponent";
+import RateFilterComponent from "./filter/RateFilterComponent";
+import LogoComponent from "./logo/LogoComponent";
+import NSFWFilterComponent from "./filter/NSFWFilterComponent";
 
 const HeaderComponent = () => {
 
@@ -22,11 +24,15 @@ const HeaderComponent = () => {
         updateGlobalState({rate: rate})
     };
 
+    const handleNsfwFilter = (value: boolean) => {
+        updateGlobalState({nsfwOnly: value})
+    };
+
     return (
         <MainHeader>
             <div className="header-container">
                 <NavLink to="/">
-                    <img src="./logo512.png" className="logo" alt="my logo img"/>
+                    <LogoComponent/>
                 </NavLink>
                 <DropdownMenuComponent/>
             </div>
@@ -43,6 +49,10 @@ const HeaderComponent = () => {
                             onChange={handleRateFilter}
                         />
                     </div>
+                    <NSFWFilterComponent
+                        isEnabled={globalState.nsfwOnly}
+                        onToggle={handleNsfwFilter}
+                    />
                 </SearchAndFilterStyled>
             </div>
             <Nav>
@@ -128,8 +138,10 @@ const MainHeader = styled.header`
     }
 
     .logo {
-        height: 5rem;
-        margin-right: 40px;
+        //display: flex;
+        //height: 5rem;
+        //margin-right: 20px;
+        //justify-content: flex-start; /* Выравнивание содержимого слева */
     }
 `;
 

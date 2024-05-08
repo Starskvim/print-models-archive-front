@@ -8,6 +8,7 @@ interface SearchBoxProps {
     className?: string;
 }
 
+// TODO form and suggest
 const SearchBox: React.FC<SearchBoxProps> = (
     {value, onChange, className}
 ) => {

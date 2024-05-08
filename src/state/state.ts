@@ -8,8 +8,9 @@ export interface GlobalState {
     searchQuery: string | undefined;
     currentPage: number;
     totalPages: number | undefined;
-    size: number
-    rate: string
+    size: number;
+    rate: string;
+    nsfwOnly: boolean;
 }
 
 export const InitialGlobalState: GlobalState = {
@@ -20,7 +21,8 @@ export const InitialGlobalState: GlobalState = {
     currentPage: 1,
     totalPages: undefined,
     size: 1,
-    rate: 'all'
+    rate: 'all',
+    nsfwOnly: false
 };
 
 export interface State {

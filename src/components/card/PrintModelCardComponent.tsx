@@ -5,7 +5,7 @@ import React from "react";
 import styled from "styled-components";
 import {toStringDate} from "../../utils/DateUtils";
 import StarRatingComponent from "./StarRatingComponent";
-import AdultContentIndicatorComponent from "./AdultContentIndicatorComponent";
+import NSFWIndicatorComponent from "./NSFWIndicatorComponent";
 import { DivRowStyled } from "../../styles/DivRowStyled";
 
 const PrintModelCardComponent = (
@@ -36,7 +36,7 @@ const PrintModelCardComponent = (
             <DivRowStyled>
                 <div className="content-row">
                     <StarRatingComponent selectedStars={product.rate}/>
-                    <AdultContentIndicatorComponent isVisible={product?.nsfw}/>
+                    <NSFWIndicatorComponent isVisible={product?.nsfw}/>
                 </div>
             </DivRowStyled>
         </div>

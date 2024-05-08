@@ -5,7 +5,7 @@ interface AdultContentIndicatorProps {
     isVisible: boolean;
 }
 
-const AdultContentIndicatorComponent: React.FC<AdultContentIndicatorProps> = ({ isVisible }) => {
+const NSFWIndicatorComponent: React.FC<AdultContentIndicatorProps> = ({ isVisible }) => {
     if (!isVisible) return null;
 
     return (
@@ -30,4 +30,4 @@ const AdultStyled = styled.section`
 
 `;
 
-export default AdultContentIndicatorComponent;
+export default NSFWIndicatorComponent;
