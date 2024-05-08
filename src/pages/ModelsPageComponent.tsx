@@ -16,14 +16,17 @@ const ModelsPageComponent: React.FC<ModelsPageProps> = ({}) => {
 
     const { categoryName } = useParams<{ categoryName?: string }>();
 
-    const navigate = useNavigate();
-
     const {globalState, updateGlobalState} = useAppContext();
 
     useEffect(() => {
         updateModelCards();
         window.scrollTo(0, 0);
-    }, [categoryName]); // Перезагрузка при изменении категории
+    }, [
+        categoryName,
+        globalState.currentPage,
+        globalState.rate,
+        globalState.searchQuery
+    ]); // hook on state
 
     const updateModelCards = async () => {
         const response = await fetchModelCards(
@@ -46,17 +49,14 @@ const ModelsPageComponent: React.FC<ModelsPageProps> = ({}) => {
 
     const handlePageClick = (target: number) => {
         updateGlobalState({currentPage: target});
-        updateModelCards();
     };
 
     const handleRateFilter = (rate: string) => {
         updateGlobalState({rate: rate})
-        updateModelCards();
     };
 
     const handleSearch = (query: string) => {
         updateGlobalState({currentPage: 1, searchQuery: query})
-        updateModelCards();
     };
 
     return (

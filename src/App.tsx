@@ -10,6 +10,7 @@ import {GlobalStyle} from "./styles/GlobalStyle";
 import {AdminPage} from "./pages/AdminPage";
 import {AppProvider} from "./state/AppContext";
 import ModelsPageComponent from "./pages/ModelsPageComponent";
+import ModelPageComponent from "./pages/ModelPageComponent";
 
 const ModelPageWrapper = () => {
     const {id} = useParams<{ id?: string }>();
@@ -30,7 +31,7 @@ class App extends React.Component {
                             <Route path="/" element={<ModelsPageComponent/>}/>
                             <Route path="/models" element={<ModelsPageComponent/>}/>
                             <Route path="/models/category/:categoryName" element={<ModelsPageComponent/>}/>
-                            <Route path="/models/:id" element={<ModelPageWrapper/>}/>
+                            <Route path="/models/:id" element={<ModelPageComponent/>}/>
                             <Route path="/admin" element={<AdminPage/>}/>
                         </Routes>
                         <Footer/>
