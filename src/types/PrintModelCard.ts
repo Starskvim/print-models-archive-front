@@ -4,6 +4,8 @@ export interface PrintModelCard {
     modelName: string,
     rate: number,
     nsfw: boolean,
+    category: string,
+    categories: string[],
     images: string[],
     addedAt: string
 }

@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import styled from "styled-components";
-import {InitialSingleState, InitialState, SingleState, State} from "../types/state";
+import {InitialSingleState, SingleState} from "../state/state";
 import {getModelCard} from "../services/ProductService";
-import PrintModelComponent from "../components/PrintModelComponent";
+import PrintModelComponent from "../components/card/PrintModelComponent";
 import AsyncImage from "../components/AsyncImage";
-import { Helmet } from "react-helmet";
+import {Helmet} from "react-helmet";
 
 export class ModelPage extends Component<{ id: string }> {
 

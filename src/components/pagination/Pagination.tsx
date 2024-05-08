@@ -10,7 +10,7 @@ export type Props = {
     setCurrentPage: (page: number) => void;
 };
 
-export default function Pagination({
+export default function PaginationComponent({
                                        currentPage,
                                        lastPage,
                                        maxLength,
@@ -19,7 +19,7 @@ export default function Pagination({
     const pageNums = getPaginationItems(currentPage, lastPage, maxLength);
 
     return (
-        <nav className="pagination" aria-label="Pagination">
+        <nav className="pagination" aria-label="PaginationComponent">
             <PageLink
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(currentPage - 1)}

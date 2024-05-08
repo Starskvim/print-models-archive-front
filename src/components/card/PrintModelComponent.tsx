@@ -1,11 +1,12 @@
-import {PrintModel} from "../types/PrintModel";
-import AsyncImage from './AsyncImage';
+import {PrintModel} from "../../types/PrintModel";
+import AsyncImage from '../AsyncImage';
 import styled from "styled-components";
 import React from "react";
-import {toStringDate} from "../utils/DateUtils";
-import {DivRowStyled} from "../styles/DivRowStyled";
-import StarRatingComponent from "./card/StarRatingComponent";
-import AdultContentIndicatorComponent from "./card/AdultContentIndicatorComponent";
+import {toStringDate} from "../../utils/DateUtils";
+import {DivRowStyled} from "../../styles/DivRowStyled";
+import StarRatingComponent from "./StarRatingComponent";
+import AdultContentIndicatorComponent from "./AdultContentIndicatorComponent";
+import { Link } from 'react-router-dom';
 
 const PrintModelComponent = (
     {
@@ -27,8 +28,15 @@ const PrintModelComponent = (
             />
             <div className="card-body">
                 <h5 className="card-title">{product.modelName}</h5>
-                <p className="card-text">Id - {product.id}</p>
-                <p className="card-text">Added at - { toStringDate(product.addedAt!!) }</p>
+                <p className="card-text">Path - {product.path}</p>
+                <p className="card-text">Category - {product.category}</p>
+                <p className="card-text">Categories - {product.categories.map((cat, index) => (
+                    <React.Fragment key={index}>
+                        <Link to={`/models/category/${cat}`} style={{marginRight: '5px'}}>{cat}</Link>
+                        {index < product.categories.length - 1 ? ' -> ' : ''}
+                    </React.Fragment>
+                ))}</p>
+                <p className="card-text">Added at - {toStringDate(product.addedAt!!)}</p>
                 <DivRowStyled>
                     <div className="content-row">
                         <StarRatingComponent selectedStars={product.rate}/>
@@ -43,10 +51,6 @@ const PrintModelComponent = (
 
 const ModelStyled = styled.section`
 
-    .main-model-info {
-        
-    }
-    
     .main-preview {
         //border-radius: 15px;
         box-shadow: 0 0 10px 5px #000;

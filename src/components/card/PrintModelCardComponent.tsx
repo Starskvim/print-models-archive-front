@@ -10,20 +10,18 @@ import { DivRowStyled } from "../../styles/DivRowStyled";
 
 const PrintModelCardComponent = (
     {
-        product,
-        cachedImages
+        product
     }: {
-        product: PrintModelCard,
-        cachedImages: { [url in string]: HTMLImageElement }
+        product: PrintModelCard
     }
 ) =>
     <div className="card" style={{width: '300px', margin: 'auto'}}>
         <AsyncImage
             src={product.preview}
             className="card-img-top"
+            cachedImages={{}}
             width={300}
             height={300}
-            cachedImages={cachedImages}
             bgColor={'hsl(0, 0%, 100%)'}
             preloadBgColor={'hsl(0, 0%, 75%)'}
         />
@@ -33,7 +31,7 @@ const PrintModelCardComponent = (
                     {product.modelName}
                 </NavLink>
             </NavStyled>
-            <p className="card-text">Id - {product.id}</p>
+            <p className="card-text">Category - {product.category}</p>
             <p className="card-text">Added at - {toStringDate(product?.addedAt!!)}</p>
             <DivRowStyled>
                 <div className="content-row">
@@ -46,7 +44,7 @@ const PrintModelCardComponent = (
 
 
 const NavStyled = styled.nav`
-    
+
     .navbar-link {
         &:link,
         &:visited {

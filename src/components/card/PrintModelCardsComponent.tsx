@@ -1,43 +1,44 @@
 import {PrintModelCard} from "../../types/PrintModelCard";
 import PrintModelCardComponent from "./PrintModelCardComponent";
-import Pagination from "../Pagination";
-import {PageState} from "../../types/state";
+import PaginationComponent from "../PaginationComponent";
+import {PageState} from "../../state/state";
 import {PAGE_SIZE} from "../../configuration/Config";
+import React from "react";
 
-export const DEFAULT_PAGE_SIZE = 2
 
-const PrintModelCardsComponent = (
+interface PrintModelCardsComponentProps {
+    products: PrintModelCard[];
+    onPageChange: (page: number) => void; // More specific function type
+    size: number;
+    currentPage: number;
+}
+
+const PrintModelCardsComponent: React.FC<PrintModelCardsComponentProps> = (
     {
         products,
-        onProductClick,
-        cachedImages,
         onPageChange,
-        pageState
-    }: {
-        products: PrintModelCard[],
-        onProductClick: Function,
-        cachedImages: { [url in string]: HTMLImageElement },
-        onPageChange: Function,
-        pageState: PageState
+        size,
+        currentPage
     }
-) =>
-    <div className="row">
-        {
-            products?.map(product => (
-                    <div className="col my-3" key={product.id} onClick={() => onProductClick(product)}>
-                        <PrintModelCardComponent product={product} cachedImages={cachedImages}/>
-                    </div>
-                )
-            )
-        }
-        <div>
-            <Pagination
-                itemsCount={pageState.size}
-                maxItemsPerPage={PAGE_SIZE}
-                currentPage={pageState.currentPage}
-                onPageChange={onPageChange}
-            />
+) => {
+    return (
+        <div className="row">
+            {products.map(product => (
+                <div className="col my-3" key={product.id}>
+                    <PrintModelCardComponent product={product}/>
+                </div>
+            ))}
+            <div>
+                <PaginationComponent
+                    itemsCount={size}
+                    maxItemsPerPage={PAGE_SIZE}
+                    currentPage={currentPage}
+                    onPageChange={onPageChange}
+                />
+            </div>
         </div>
-    </div>
+    );
+};
+
 
 export default PrintModelCardsComponent;

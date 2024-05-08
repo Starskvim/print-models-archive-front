@@ -17,13 +17,13 @@ const DropdownMenu: FC<DropdownMenuProps> = (
     return (
         <Styled>
             <div className="dropdownMenu">
-                <button onClick={toggleMenu}>Categories {isMenuOpen ? '▼' : '►'}</button>
+                <button onClick={toggleMenu}>Catalog {isMenuOpen ? '▼' : '►'}</button>
                 {isMenuOpen && (
-                    <ul>
+                    <div className="dropdownItem">
                         {categories.map(category => (
                             <CategoryItem key={category.name} category={category}/>
                         ))}
-                    </ul>
+                    </div>
                 )}
             </div>
         </Styled>
@@ -55,30 +55,7 @@ const Styled = styled.div`
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для 3D эффекта */
     }
 
-    .dropdownMenu ul {
-        //list-style: none;
-        //padding: 0;
-        //margin: 0;
-        //position: absolute;
-        //width: 100%; /* Ширина списка равна ширине кнопки */
-        //background-color: white;
-        //border: 1px solid #ccc;
-        //border-radius: 5px;
-        //box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень вокруг выпадающего списка */
-        //max-height: 300px; /* Ограничиваем высоту и добавляем скролл */
-        //overflow-y: auto;
-
-        //list-style: none;
-        //padding: 10px 0; /* Увеличенные верхний и нижний отступы */
-        //margin: 0;
-        //position: absolute;
-        //width: 300px; /* Увеличенная ширина списка */
-        //background-color: white;
-        //border: 1px solid #ccc;
-        //border-radius: 5px;
-        //box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        //max-height: 800px; /* Увеличенная максимальная высота */
-        //overflow-y: auto; /* Поддержка прокрутки, если содержимое превышает максимальную высоту */
+    .dropdownMenu dropdownItem {
 
         list-style: none;
         padding: 5px 0; /* Возможно увеличение внутренних отступов */
@@ -90,6 +67,6 @@ const Styled = styled.div`
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         max-height: 600px; /* Увеличенная максимальная высота */
-        overflow-y: auto; /* Поддержка прокрутки */
+        //overflow-y: auto; /* Поддержка прокрутки */
     }
 `;
