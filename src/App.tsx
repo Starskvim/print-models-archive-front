@@ -3,7 +3,7 @@ import React from 'react';
 import {BrowserRouter as Router, Route, Routes, useParams} from 'react-router-dom';
 import {ThemeProvider} from "styled-components";
 import theme from "./styles/theme";
-import Header from "./components/Header";
+import HeaderComponent from "./components/HeaderComponent";
 import Footer from "./components/Footer";
 import {GlobalStyle} from "./styles/GlobalStyle";
 import {AdminPage} from "./pages/AdminPage";
@@ -19,7 +19,7 @@ class App extends React.Component {
                 <AppProvider>
                     <Router>
                         <GlobalStyle/>
-                        <Header/>
+                        <HeaderComponent/>
                         <Routes>
                             <Route path="/" element={<ModelsPageComponent/>}/>
                             <Route path="/models" element={<ModelsPageComponent/>}/>

@@ -1,37 +1,50 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {NavLink} from "react-router-dom";
 import styled from "styled-components";
 
-import DropdownMenuComponent from "./catalog/DropdownMenuComponent";
-import {getCatalog} from "../services/CatalogService";
-import {Catalog, Category} from "../types/catalog/Catalog";
+import DropdownMenuComponent from "./catalog/CatalogDropdownMenuComponent";
+import {useAppContext} from "../state/AppContext";
+import SearchBox from "./SearchBox";
+import RateFilterComponent from "./RateFilterComponent";
 
-const Header = () => {
+const HeaderComponent = () => {
 
-    const [catalog, setCatalog] = useState<Category[]>([]);
+    const {globalState, updateGlobalState} = useAppContext();
 
     useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const catalog: Catalog = await getCatalog();
-                setCatalog(catalog.catalog);
-            } catch (error) {
-                console.error("Failed to fetch categories:", error);
-            }
-        };
-        fetchCategories();
     }, []);
+
+    const handleSearch = (query: string) => {
+        updateGlobalState({currentPage: 1, searchQuery: query})
+    };
+
+    const handleRateFilter = (rate: string) => {
+        updateGlobalState({rate: rate})
+    };
 
     return (
         <MainHeader>
-
             <div className="header-container">
                 <NavLink to="/">
                     <img src="./logo512.png" className="logo" alt="my logo img"/>
                 </NavLink>
-                <DropdownMenuComponent categories={catalog}/>
+                <DropdownMenuComponent/>
             </div>
-
+            <div className="container">
+                <SearchAndFilterStyled>
+                    <SearchBox
+                        value={globalState.searchQuery}
+                        onChange={handleSearch}
+                        className="search-box-container"
+                    />
+                    <div className="rate-filter-container">
+                        <RateFilterComponent
+                            rate={globalState.rate}
+                            onChange={handleRateFilter}
+                        />
+                    </div>
+                </SearchAndFilterStyled>
+            </div>
             <Nav>
                 <div className={"navbar active"}>
                     <ul className="navbar-lists">
@@ -56,6 +69,47 @@ const Header = () => {
         </MainHeader>
     );
 };
+
+const SearchAndFilterStyled = styled.div`
+    display: flex;
+    justify-content: space-between;
+    //justify-content: center;
+    align-items: center;
+    padding: 10px;
+    //margin-bottom: 10px;
+    background-color: #f7f7f7; // Светлый фон для визуального выделения области
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:focus {
+        border-color: #007bff; // Синий цвет границы при фокусе
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 8px rgba(0, 123, 255, 0.5); // Увеличение тени при фокусе
+        outline: none; // Убираем стандартный контур
+    }
+
+    .search-box-container {
+        //flex: auto; // Оба элемента занимают равное пространство
+        margin: 0 5px; // Добавляем немного пространства с обеих сторон
+        width: 100%; // Занимает всю ширину контейнера
+        padding: 10px 15px; // Увеличенные отступы для лучшего внешнего вида
+        font-size: 16px; // Больший размер шрифта для улучшения читаемости
+        border: 1px solid #ccc; // Тонкая рамка вокруг поля
+        border-radius: 5px; // Скругленные углы для современного вида
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); // Внутренняя тень для глубины
+        transition: border-color 0.3s ease-in-out; // Плавное изменение цвета границы
+        justify-content: center;
+
+        &:focus {
+            border-color: #007bff; // Синий цвет границы при фокусе
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 8px rgba(0, 123, 255, 0.5); // Увеличение тени при фокусе
+            outline: none; // Убираем стандартный контур
+        }
+    }
+
+    .rate-filter-container {
+        margin: 0 5px; // Добавляем немного пространства с обеих сторон
+    }
+`;
 
 const MainHeader = styled.header`
     padding: 0 4.8rem;
@@ -179,4 +233,4 @@ const Nav = styled.nav`
         }
     }
 `;
-export default Header;
+export default HeaderComponent;

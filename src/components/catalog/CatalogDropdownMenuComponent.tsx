@@ -1,18 +1,27 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import CategoryItem from "./CategoryItemComponent";
-import {Category} from "../../types/catalog/Catalog";
+import {Catalog, Category} from "../../types/catalog/Catalog";
 import styled from "styled-components";
+import {getCatalog} from "../../services/CatalogService";
 
 interface DropdownMenuProps {
-    categories: Category[];
+
 }
 
-const DropdownMenu: FC<DropdownMenuProps> = (
-    {categories}
-) => {
+const CatalogDropdownMenu: FC<DropdownMenuProps> = () => {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+    const [catalog, setCatalog] = useState<Category[]>([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const catalog: Catalog = await getCatalog();
+            setCatalog(catalog.catalog);
+        };
+        fetchCategories();
+    }, []);
 
     return (
         <Styled>
@@ -20,7 +29,7 @@ const DropdownMenu: FC<DropdownMenuProps> = (
                 <button onClick={toggleMenu}>Catalog {isMenuOpen ? '▼' : '►'}</button>
                 {isMenuOpen && (
                     <div className="dropdownItem">
-                        {categories.map(category => (
+                        {catalog.map(category => (
                             <CategoryItem key={category.name} category={category}/>
                         ))}
                     </div>
@@ -30,7 +39,7 @@ const DropdownMenu: FC<DropdownMenuProps> = (
     );
 };
 
-export default DropdownMenu;
+export default CatalogDropdownMenu;
 
 const Styled = styled.div`
     .dropdownMenu {

@@ -15,8 +15,8 @@ const PrintModelComponent = (
         product: PrintModel,
     }
 ) =>
-    <ModelStyled>
-        <div className="card" style={{width: '600px', margin: 'auto'}}>
+    <Styled>
+        <div className="card">
             <AsyncImage
                 src={product?.preview}
                 className="main-preview"
@@ -36,7 +36,7 @@ const PrintModelComponent = (
                         {index < product.categories.length - 1 ? ' -> ' : ''}
                     </React.Fragment>
                 ))}</p>
-                <p className="card-text">Added at - {toStringDate(product.addedAt!!)}</p>
+                <p className="card-text">Added at - {toStringDate(product.addedAt)}</p>
                 <DivRowStyled>
                     <div className="content-row">
                         <StarRatingComponent selectedStars={product.rate}/>
@@ -46,18 +46,52 @@ const PrintModelComponent = (
             </div>
         </div>
         ;
-    </ModelStyled>
+    </Styled>
 
 
-const ModelStyled = styled.section`
-
-    .main-preview {
-        //border-radius: 15px;
-        box-shadow: 0 0 10px 5px #000;
-    }
+const Styled = styled.section`
 
     @media (max-width: ${({theme}) => theme.media.mobile}) {
         padding: 0 2.4rem;
+    }
+
+    .card-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2c3e50; /* Темно-синий цвет */
+        margin-bottom: 10px;
+    }
+
+    .card {
+        width: 600px;
+        margin: 30px auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        background: #ffffff;
+    }
+
+    .main-preview {
+        width: 100%; /* Занимает всю ширину карточки */
+        height: auto;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        object-fit: cover;
+    }
+
+    .card-text {
+        font-size: 16px;
+        color: #34495e;
+        line-height: 1.5;
+    }
+
+    a {
+        color: #2980b9;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
     }
 `;
 

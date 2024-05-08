@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { debounce } from 'lodash';
+import React, {useEffect, useState} from 'react';
+import {debounce} from 'lodash';
+import styled from "styled-components";
 
 interface SearchBoxProps {
     value: string | undefined;
     onChange: (value: string) => void;
+    className?: string;
 }
 
-const SearchBox: React.FC<SearchBoxProps> = ({ value, onChange }) => {
+const SearchBox: React.FC<SearchBoxProps> = (
+    {value, onChange, className}
+) => {
 
     const [inputValue, setInputValue] = useState(value);
 
@@ -22,13 +26,13 @@ const SearchBox: React.FC<SearchBoxProps> = ({ value, onChange }) => {
     };
 
     return (
-        <input
-            type="text"
-            className="form-control my-3"
-            placeholder="Search by products name..."
-            value={inputValue || ''}
-            onChange={handleChange}
-        />
+            <input
+                type="text"
+                className={className}
+                placeholder="Search by models name..."
+                value={inputValue || ''}
+                onChange={handleChange}
+            />
     );
 };
 

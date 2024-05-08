@@ -58,8 +58,13 @@ const ModelPageComponent: React.FC = () => {
 export default ModelPageComponent;
 
 const ModelPageStyled = styled.section`
+
     .oth-preview {
-        box-shadow: 0 0 10px 5px #000;
+        width: 100%; /* Занимает всю ширину карточки */
+        height: auto;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        object-fit: cover;
     }
 
     @media (max-width: ${({theme}) => theme.media.mobile}) {
