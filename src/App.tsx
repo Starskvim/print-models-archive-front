@@ -1,6 +1,5 @@
 import React from 'react';
 
-import {ModelPage} from './pages/ModelPage'
 import {BrowserRouter as Router, Route, Routes, useParams} from 'react-router-dom';
 import {ThemeProvider} from "styled-components";
 import theme from "./styles/theme";
@@ -11,12 +10,6 @@ import {AdminPage} from "./pages/AdminPage";
 import {AppProvider} from "./state/AppContext";
 import ModelsPageComponent from "./pages/ModelsPageComponent";
 import ModelPageComponent from "./pages/ModelPageComponent";
-
-const ModelPageWrapper = () => {
-    const {id} = useParams<{ id?: string }>();
-    // @ts-ignore TODO
-    return <ModelPage id={id}/>;
-};
 
 // TODO main page
 class App extends React.Component {
