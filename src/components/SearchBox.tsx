@@ -3,6 +3,7 @@ import {debounce} from 'lodash';
 import {PrintModelCard} from "../types/PrintModelCard";
 import {fetchSuggestionsModelCards} from "../services/ProductService";
 import {NavLink} from "react-router-dom";
+import styled from "styled-components";
 
 interface SearchBoxProps {
     value: string | undefined;
@@ -46,27 +47,27 @@ const SearchBox: React.FC<SearchBoxProps> = (
     }, 400);
 
     return (
-        <div className="search-box-container">
-            <input
-                type="text"
-                className={className}
-                placeholder="Search by models name..."
-                value={inputValue || ''}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-            />
-            {suggestions.length > 0 && (
-                <ul className="suggestions">
-                    {suggestions.map((suggestion, index) => (
-                        <NavLink to={`/models/${suggestion.id}`}>
-                            <li key={index}>
-                                {suggestion.modelName}
-                            </li>
-                        </NavLink>
-                    ))}
-                </ul>
-            )}
-        </div>
+            <div className="search-box-container-element">
+                <input
+                    type="text"
+                    className="search-box-container-input"
+                    placeholder="Search by models name..."
+                    value={inputValue || ''}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                />
+                {suggestions.length > 0 && (
+                    <ul className="suggestions">
+                        {suggestions.map((suggestion, index) => (
+                            <NavLink to={`/models/${suggestion.id}`}>
+                                <li key={index}>
+                                    {suggestion.modelName}
+                                </li>
+                            </NavLink>
+                        ))}
+                    </ul>
+                )}
+            </div>
     );
 };
 

@@ -87,7 +87,8 @@ const SearchAndFilterStyled = styled.div`
     justify-content: space-between;
     //justify-content: center;
     align-items: center;
-    padding: 10px;
+    padding: 5px;
+    width: 100%;
     //margin-bottom: 10px;
     background-color: #f7f7f7; // Светлый фон для визуального выделения области
     border-radius: 8px;
@@ -128,13 +129,21 @@ const SearchAndFilterStyled = styled.div`
         border-radius: 5px; // Скругленные углы для современного вида
         box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); // Внутренняя тень для глубины
         transition: border-color 0.3s ease-in-out; // Плавное изменение цвета границы
-        justify-content: center;
+        //justify-content: center;
 
         &:focus {
             border-color: #007bff; // Синий цвет границы при фокусе
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 8px rgba(0, 123, 255, 0.5); // Увеличение тени при фокусе
             outline: none; // Убираем стандартный контур
         }
+    }
+
+    .search-box-container-input {
+        width: 100%; /* Занимает всю ширину своего контейнера */
+        padding: 5px 8px; /* Добавляем немного внутреннего отступа для удобства */
+        box-sizing: border-box; /* Гарантирует, что padding не добавит дополнительную ширину */
+        border: 1px solid #ccc; /* Стилизация границы */
+        border-radius: 4px; /* Скругление углов */
     }
 
     .rate-filter-container {
@@ -162,6 +171,16 @@ const SearchAndFilterStyled = styled.div`
                 background-color: #f0f0f0;
             }
         }
+    }
+
+    .suggestions li {
+        padding: 8px 10px;
+        cursor: pointer;
+    }
+
+    .suggestions li:hover,
+    .suggestions li:focus {
+        background-color: #f0f0f0; /* Стиль для наведения и фокуса */
     }
 `;
 
