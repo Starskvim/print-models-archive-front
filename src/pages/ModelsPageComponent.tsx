@@ -51,7 +51,7 @@ const ModelsPageComponent: React.FC<ModelsPageProps> = ({}) => {
         );
         updateGlobalState(
             {
-                products: response.models,
+                products: response.models? response.models : [],
                 size: response.totalElements,
                 totalPages: response.totalPages
             },

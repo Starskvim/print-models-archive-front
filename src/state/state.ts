@@ -15,7 +15,6 @@ export interface GlobalState {
     selectedCategory: string,
     catalog: Category[],
     categories: Category[],
-
 }
 
 export const InitialGlobalState: GlobalState = {
@@ -30,5 +29,5 @@ export const InitialGlobalState: GlobalState = {
     nsfwOnly: false,
     selectedCategory: 'all',
     catalog: [],
-    categories: []
+    categories: [],
 };

@@ -40,8 +40,8 @@ const HeaderComponent = () => {
                 <SearchAndFilterStyled>
                     <SearchBox
                         value={globalState.searchQuery}
-                        onChange={handleSearch}
-                        className="search-box-container"
+                        onKeyDown={handleSearch}
+                        className="search-box-container-element"
                     />
                     <div className="rate-filter-container">
                         <RateFilterComponent
@@ -80,6 +80,8 @@ const HeaderComponent = () => {
     );
 };
 
+export default HeaderComponent;
+
 const SearchAndFilterStyled = styled.div`
     display: flex;
     justify-content: space-between;
@@ -116,8 +118,50 @@ const SearchAndFilterStyled = styled.div`
         }
     }
 
+    .search-box-container-element {
+        //flex: auto; // Оба элемента занимают равное пространство
+        margin: 0 5px; // Добавляем немного пространства с обеих сторон
+        width: 100%; // Занимает всю ширину контейнера
+        padding: 10px 15px; // Увеличенные отступы для лучшего внешнего вида
+        font-size: 16px; // Больший размер шрифта для улучшения читаемости
+        border: 1px solid #ccc; // Тонкая рамка вокруг поля
+        border-radius: 5px; // Скругленные углы для современного вида
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); // Внутренняя тень для глубины
+        transition: border-color 0.3s ease-in-out; // Плавное изменение цвета границы
+        justify-content: center;
+
+        &:focus {
+            border-color: #007bff; // Синий цвет границы при фокусе
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 8px rgba(0, 123, 255, 0.5); // Увеличение тени при фокусе
+            outline: none; // Убираем стандартный контур
+        }
+    }
+
     .rate-filter-container {
         margin: 0 5px; // Добавляем немного пространства с обеих сторон
+    }
+
+    .suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        z-index: 1000;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        border: 1px solid #ccc;
+        border-top: none;
+
+        li {
+            padding: 8px 12px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #f0f0f0;
+            }
+        }
     }
 `;
 
@@ -136,13 +180,6 @@ const MainHeader = styled.header`
         justify-content: flex-start; /* Выравнивание содержимого слева */
         padding: 10px;
     }
-
-    .logo {
-        //display: flex;
-        //height: 5rem;
-        //margin-right: 20px;
-        //justify-content: flex-start; /* Выравнивание содержимого слева */
-    }
 `;
 
 const Nav = styled.nav`
@@ -159,90 +196,18 @@ const Nav = styled.nav`
                 font-size: 1.8rem;
                 font-weight: 500;
                 text-transform: uppercase;
-                color: ${({theme}) => theme.colors.black};
+                color: ${({theme}) => theme.colors.white};
                 transition: color 0.3s linear;
             }
 
             &:hover,
             &:active {
-                color: ${({theme}) => theme.colors.helper};
+                color: ${({theme}) => theme.colors.black};
             }
         }
-    }
-
-    .mobile-navbar-btn {
-        display: none;
-        background-color: transparent;
-        cursor: pointer;
-        border: none;
-    }
-
-    .mobile-nav-icon[name="close-outline"] {
-        display: none;
     }
 
     .close-outline {
         display: none;
     }
-
-    @media (max-width: ${({theme}) => theme.media.mobile}) {
-        .mobile-navbar-btn {
-            display: inline-block;
-            z-index: 9999;
-            border: ${({theme}) => theme.colors.black};
-
-            .mobile-nav-icon {
-                font-size: 4.2rem;
-                color: ${({theme}) => theme.colors.black};
-            }
-        }
-
-        .active .mobile-nav-icon {
-            display: none;
-            font-size: 4.2rem;
-            position: absolute;
-            top: 30%;
-            right: 10%;
-            color: ${({theme}) => theme.colors.black};
-            z-index: 9999;
-        }
-
-        .active .close-outline {
-            display: inline-block;
-        }
-
-        .navbar-lists {
-            width: 100vw;
-            height: 100vh;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background-color: #fff;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-
-            visibility: hidden;
-            opacity: 0;
-            transform: translateX(100%);
-            /* transform-origin: top; */
-            transition: all 3s linear;
-        }
-
-        .active .navbar-lists {
-            visibility: visible;
-            opacity: 1;
-            transform: translateX(0);
-            z-index: 999;
-            transform-origin: right;
-            transition: all 3s linear;
-
-            .navbar-link {
-                font-size: 4.2rem;
-            }
-        }
-    }
 `;
-export default HeaderComponent;
