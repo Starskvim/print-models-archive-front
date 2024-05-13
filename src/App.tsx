@@ -6,10 +6,10 @@ import theme from "./styles/theme";
 import HeaderComponent from "./components/HeaderComponent";
 import Footer from "./components/Footer";
 import {GlobalStyle} from "./styles/GlobalStyle";
-import {AdminPage} from "./pages/AdminPage";
 import {AppProvider} from "./state/AppContext";
 import ModelsPageComponent from "./pages/ModelsPageComponent";
 import ModelPageComponent from "./pages/ModelPageComponent";
+import AdminPageComponent from "./pages/AdminPageComponent";
 
 // TODO main page
 class App extends React.Component {
@@ -25,7 +25,7 @@ class App extends React.Component {
                             <Route path="/models" element={<ModelsPageComponent/>}/>
                             <Route path="/models/category/:categoryName" element={<ModelsPageComponent/>}/>
                             <Route path="/models/:id" element={<ModelPageComponent/>}/>
-                            <Route path="/admin" element={<AdminPage/>}/>
+                            <Route path="/admin" element={<AdminPageComponent/>}/>
                         </Routes>
                         <Footer/>
                     </Router>

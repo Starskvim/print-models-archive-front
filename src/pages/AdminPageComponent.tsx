@@ -1,13 +1,11 @@
-import {Component} from "react";
+import React from "react";
 import styled from "styled-components";
-import {createArchive, updateArchive, clearArchive, checkFolders} from "../services/AdminService";
-import { AdminButton } from "../styles/AdminButton";
+import {AdminButton} from "../styles/AdminButton";
+import {checkFolders, clearArchive, createArchive, updateArchive, recreateS3} from "../services/AdminService";
+
+const AdminPageComponent: React.FC = ({}) => {
 
 
-export class AdminPage extends Component {
-
-
-    render() {
         return (
             <AdminStyled>
                 <div >
@@ -24,12 +22,17 @@ export class AdminPage extends Component {
                         <AdminButton as="button" onClick={createArchive}>
                             Create
                         </AdminButton>
+                        <AdminButton as="button" onClick={recreateS3}>
+                            Recreate S3
+                        </AdminButton>
                     </nav>
                 </div>
             </AdminStyled>
         );
-    }
 }
+
+export default AdminPageComponent;
+
 
 const AdminStyled = styled.div`
 

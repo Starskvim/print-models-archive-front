@@ -3,6 +3,7 @@ import CategoryItem from "./CategoryItemComponent";
 import {Catalog, Category} from "../../types/catalog/Catalog";
 import styled from "styled-components";
 import {getCatalog} from "../../services/CatalogService";
+import {useAppContext} from "../../state/AppContext";
 
 interface DropdownMenuProps {
 
@@ -13,12 +14,12 @@ const CatalogDropdownMenu: FC<DropdownMenuProps> = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-    const [catalog, setCatalog] = useState<Category[]>([]);
+    const {globalState, updateGlobalState} = useAppContext();
 
     useEffect(() => {
         const fetchCategories = async () => {
             const catalog: Catalog = await getCatalog();
-            setCatalog(catalog.catalog);
+            updateGlobalState({catalog: catalog.catalog, categories: catalog.categories})
         };
         fetchCategories();
     }, []);
@@ -29,7 +30,7 @@ const CatalogDropdownMenu: FC<DropdownMenuProps> = () => {
                 <button onClick={toggleMenu}>Catalog {isMenuOpen ? '▼' : '►'}</button>
                 {isMenuOpen && (
                     <div className="dropdownItem">
-                        {catalog.map(category => (
+                        {globalState.categories.map(category => (
                             <CategoryItem key={category.name} category={category}/>
                         ))}
                     </div>

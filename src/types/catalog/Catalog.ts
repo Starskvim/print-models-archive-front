@@ -1,5 +1,6 @@
 export interface Catalog {
     catalog: Category[]
+    categories: Category[]
 }
 
 export interface Category {

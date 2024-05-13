@@ -15,10 +15,16 @@ async function del(url: string) {
   return res.data;
 }
 
+async function put(url: string) {
+  const res = await axios.put(url) as AxiosResponse;
+  return res.data;
+}
+
 const exports = {
   get,
   post,
-  del
+  del,
+  put
 };
 
 export default exports;

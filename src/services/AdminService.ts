@@ -20,3 +20,8 @@ export async function checkFolders() {
     const input = await http.get(API_ADMIN + "/check-folders")
     console.log("checkFolders - " + input)
 }
+
+export async function recreateS3() {
+    const input = await http.put(API_ADMIN + "/recreate-bucket")
+    console.log("recreate-bucket - " + input)
+}

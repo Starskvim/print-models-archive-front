@@ -47,7 +47,7 @@ export async function fetchModelCards(
   if (name !== undefined) {
     params.append('name', name);
   }
-  if (category !== undefined) {
+  if (category !== undefined && category !== 'all') {
     params.append('category', category);
   }
   if (rate !== undefined && rate !== 'all') {

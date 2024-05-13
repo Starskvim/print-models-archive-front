@@ -1,7 +1,6 @@
 import {PrintModelCard} from "../../types/PrintModelCard";
 import PrintModelCardComponent from "./PrintModelCardComponent";
 import PaginationComponent from "../PaginationComponent";
-import {PageState} from "../../state/state";
 import {PAGE_SIZE} from "../../configuration/Config";
 import React from "react";
 
