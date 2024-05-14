@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {debounce} from 'lodash';
-import {PrintModelCard} from "../types/PrintModelCard";
-import {fetchSuggestionsModelCards, fetchSuggestionsPrintModels} from "../services/ProductService";
+import {fetchSuggestionsPrintModels} from "../services/ProductService";
 import {NavLink} from "react-router-dom";
 import styled from "styled-components";
 import {PrintModelSuggest} from "../types/PrintModelSuggest";
@@ -49,9 +48,10 @@ const SearchBox: React.FC<SearchBoxProps> = (
         }
     }, 400);
 
+    // TODO width: "800px" ?????
     return (
         <StyledSuggests>
-            <div className="search-box-container-element">
+            <div className="search-box-container-element" style={{ width: "800px" }}>
                 <input
                     type="text"
                     className="search-box-container-input"
@@ -59,6 +59,7 @@ const SearchBox: React.FC<SearchBoxProps> = (
                     value={inputValue || ''}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
+                    style={{ width: "100%" }}
                 />
                 {suggestions.length > 0 && (
                     <ul className="suggestions">

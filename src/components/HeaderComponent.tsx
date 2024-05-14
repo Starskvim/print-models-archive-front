@@ -36,7 +36,7 @@ const HeaderComponent = () => {
                 </NavLink>
                 <DropdownMenuComponent/>
             </div>
-            <div className="container">
+            <div className="test">
                 <SearchAndFilterStyled>
                     <SearchBox
                         value={globalState.searchQuery}
@@ -103,7 +103,7 @@ const SearchAndFilterStyled = styled.div`
     .search-box-container {
         //flex: auto; // Оба элемента занимают равное пространство
         margin: 0 5px; // Добавляем немного пространства с обеих сторон
-        width: 100%; // Занимает всю ширину контейнера
+        width: 55%; // Занимает всю ширину контейнера
         padding: 10px 15px; // Увеличенные отступы для лучшего внешнего вида
         font-size: 16px; // Больший размер шрифта для улучшения читаемости
         border: 1px solid #ccc; // Тонкая рамка вокруг поля
@@ -151,6 +151,10 @@ const MainHeader = styled.header`
     justify-content: space-between;
     align-items: center;
     position: relative;
+
+    .test {
+        width: 55%
+    }
 
     .header-container {
         display: flex; /* Использование Flexbox */
