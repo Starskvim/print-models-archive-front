@@ -29,7 +29,7 @@ const FilterStyled = styled.section`
         color: #333;  // Темный цвет текста
         font-weight: bold;
         border-radius: 5px;
-        display: inline-flex;
+        display: flex;
         align-items: center;
         font-size: 14px;
         cursor: pointer;

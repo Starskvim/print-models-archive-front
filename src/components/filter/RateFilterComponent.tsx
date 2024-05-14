@@ -12,7 +12,7 @@ const RateFilterComponent = (
         onChange: Function
     }
 ) => (
-    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+    <div style={{width:"15%", display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <StyledDropdownButton
             id="dropdown-basic-button"
             title={`By Rate (${rate})`}

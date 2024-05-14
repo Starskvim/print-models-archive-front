@@ -7,15 +7,13 @@ import {PrintModelSuggest} from "../types/PrintModelSuggest";
 
 interface SearchBoxProps {
     value: string | undefined;
-    onKeyDown: (value: string) => void;
-    className?: string
+    onKeyDown: (value: string) => void
 }
 
 const SearchBox: React.FC<SearchBoxProps> = (
     {
         value,
-        onKeyDown,
-        className
+        onKeyDown
     }
 ) => {
 
@@ -51,7 +49,7 @@ const SearchBox: React.FC<SearchBoxProps> = (
     // TODO width: "800px" ?????
     return (
         <StyledSuggests>
-            <div className="search-box-container-element" style={{ width: "800px" }}>
+            <div className="search-box-container-element">
                 <input
                     type="text"
                     className="search-box-container-input"
@@ -59,7 +57,6 @@ const SearchBox: React.FC<SearchBoxProps> = (
                     value={inputValue || ''}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
-                    style={{ width: "100%" }}
                 />
                 {suggestions.length > 0 && (
                     <ul className="suggestions">
@@ -85,6 +82,25 @@ const SearchBox: React.FC<SearchBoxProps> = (
 };
 
 const StyledSuggests = styled.div`
+
+    .search-box-container-element {
+        //flex: auto; // Оба элемента занимают равное пространство
+        flex-grow: 1;
+        width: 100%;
+        margin: 0 5px; // Добавляем немного пространства с обеих сторон
+        padding: 10px 15px; // Увеличенные отступы для лучшего внешнего вида
+        font-size: 16px; // Больший размер шрифта для улучшения читаемости
+        border: 1px solid #ccc; // Тонкая рамка вокруг поля
+        border-radius: 5px; // Скругленные углы для современного вида
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); // Внутренняя тень для глубины
+        transition: border-color 0.3s ease-in-out; // Плавное изменение цвета границы
+
+        &:focus {
+            border-color: #007bff; // Синий цвет границы при фокусе
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 8px rgba(0, 123, 255, 0.5); // Увеличение тени при фокусе
+            outline: none; // Убираем стандартный контур
+        }
+    }
 
     .search-box-container-input {
         width: 100%; /* Занимает всю ширину своего контейнера */

@@ -38,11 +38,12 @@ const HeaderComponent = () => {
             </div>
             <div className="test">
                 <SearchAndFilterStyled>
-                    <SearchBox
-                        value={globalState.searchQuery}
-                        onKeyDown={handleSearch}
-                        className="search-box-container-element"
-                    />
+                    <div style={{ width:"70%"}}>
+                        <SearchBox
+                            value={globalState.searchQuery}
+                            onKeyDown={handleSearch}
+                        />
+                    </div>
                     <div className="rate-filter-container">
                         <RateFilterComponent
                             rate={globalState.rate}
@@ -84,11 +85,11 @@ export default HeaderComponent;
 
 const SearchAndFilterStyled = styled.div`
     display: flex;
+    width: 100%;
     justify-content: space-between;
     //justify-content: center;
     align-items: center;
     padding: 5px;
-    width: 100%;
     //margin-bottom: 10px;
     background-color: #f7f7f7; // Светлый фон для визуального выделения области
     border-radius: 8px;
@@ -119,25 +120,6 @@ const SearchAndFilterStyled = styled.div`
         }
     }
 
-    .search-box-container-element {
-        //flex: auto; // Оба элемента занимают равное пространство
-        margin: 0 5px; // Добавляем немного пространства с обеих сторон
-        width: 100%; // Занимает всю ширину контейнера
-        padding: 10px 15px; // Увеличенные отступы для лучшего внешнего вида
-        font-size: 16px; // Больший размер шрифта для улучшения читаемости
-        border: 1px solid #ccc; // Тонкая рамка вокруг поля
-        border-radius: 5px; // Скругленные углы для современного вида
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); // Внутренняя тень для глубины
-        transition: border-color 0.3s ease-in-out; // Плавное изменение цвета границы
-        //justify-content: center;
-
-        &:focus {
-            border-color: #007bff; // Синий цвет границы при фокусе
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 8px rgba(0, 123, 255, 0.5); // Увеличение тени при фокусе
-            outline: none; // Убираем стандартный контур
-        }
-    }
-
     .rate-filter-container {
         margin: 0 5px; // Добавляем немного пространства с обеих сторон
     }
@@ -153,7 +135,8 @@ const MainHeader = styled.header`
     position: relative;
 
     .test {
-        width: 55%
+        display: flex;
+        width: 100%;
     }
 
     .header-container {
