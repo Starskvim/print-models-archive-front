@@ -4,6 +4,8 @@ import {PrintModelResponse} from "../types/PrintModelResponse";
 import {PrintModel} from "../types/PrintModel";
 import {API_MODELS, IMG_S3_URL} from "../configuration/Config";
 import {PrintModelCard} from "../types/PrintModelCard";
+import {PrintModelSuggest} from "../types/PrintModelSuggest";
+import {SuggestionsResponse} from "../types/SuggestionsResponse";
 
 // http://localhost:8081/archive/api/models
 // ?page=0
@@ -78,6 +80,16 @@ export async function fetchSuggestionsModelCards(
     return input
 }
 
+export async function fetchSuggestionsPrintModels(
+    query: string,
+): Promise<SuggestionsResponse> {
+    const url = API_MODELS + "/suggestions/" + query;
+    console.log("fetchModelCards url - " + url)
+    const input = await http.get(url) as SuggestionsResponse
+    prepareSuggestImgUrls(input.suggestions)
+    return input
+}
+
 function prepareModelImgUrls(model: PrintModel) {
     model.preview = IMG_S3_URL + model?.preview;
     model.oths.forEach((oth) => {
@@ -86,6 +98,12 @@ function prepareModelImgUrls(model: PrintModel) {
 }
 
 function prepareCardImgUrls(models: PrintModelCard[] | undefined) {
+    models?.forEach((model) => {
+        model.preview = IMG_S3_URL + model.preview;
+    })
+}
+
+function prepareSuggestImgUrls(models: PrintModelSuggest[] | undefined) {
     models?.forEach((model) => {
         model.preview = IMG_S3_URL + model.preview;
     })

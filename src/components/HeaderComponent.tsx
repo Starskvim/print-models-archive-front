@@ -138,49 +138,8 @@ const SearchAndFilterStyled = styled.div`
         }
     }
 
-    .search-box-container-input {
-        width: 100%; /* Занимает всю ширину своего контейнера */
-        padding: 5px 8px; /* Добавляем немного внутреннего отступа для удобства */
-        box-sizing: border-box; /* Гарантирует, что padding не добавит дополнительную ширину */
-        border: 1px solid #ccc; /* Стилизация границы */
-        border-radius: 4px; /* Скругление углов */
-    }
-
     .rate-filter-container {
         margin: 0 5px; // Добавляем немного пространства с обеих сторон
-    }
-
-    .suggestions {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        z-index: 1000;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        border: 1px solid #ccc;
-        border-top: none;
-
-        li {
-            padding: 8px 12px;
-            cursor: pointer;
-
-            &:hover {
-                background-color: #f0f0f0;
-            }
-        }
-    }
-
-    .suggestions li {
-        padding: 8px 10px;
-        cursor: pointer;
-    }
-
-    .suggestions li:hover,
-    .suggestions li:focus {
-        background-color: #f0f0f0; /* Стиль для наведения и фокуса */
     }
 `;
 

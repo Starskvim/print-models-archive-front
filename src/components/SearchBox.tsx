@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {debounce} from 'lodash';
 import {PrintModelCard} from "../types/PrintModelCard";
-import {fetchSuggestionsModelCards} from "../services/ProductService";
+import {fetchSuggestionsModelCards, fetchSuggestionsPrintModels} from "../services/ProductService";
 import {NavLink} from "react-router-dom";
 import styled from "styled-components";
+import {PrintModelSuggest} from "../types/PrintModelSuggest";
 
 interface SearchBoxProps {
     value: string | undefined;
@@ -21,7 +22,7 @@ const SearchBox: React.FC<SearchBoxProps> = (
 
     const [inputValue, setInputValue] = useState(value);
 
-    const [suggestions, setSuggestions] = useState<PrintModelCard[]>([]);
+    const [suggestions, setSuggestions] = useState<PrintModelSuggest[]>([]);
 
     useEffect(() => {
         setInputValue(value);
@@ -42,11 +43,14 @@ const SearchBox: React.FC<SearchBoxProps> = (
     };
 
     const fetchSuggestions = debounce(async name => {
-        const response = await fetchSuggestionsModelCards(name);
-        setSuggestions(response.models ? response.models : []);
+        if (name !== undefined) {
+            const response = await fetchSuggestionsPrintModels(name);
+            setSuggestions(response.suggestions ? response.suggestions : []);
+        }
     }, 400);
 
     return (
+        <StyledSuggests>
             <div className="search-box-container-element">
                 <input
                     type="text"
@@ -59,16 +63,94 @@ const SearchBox: React.FC<SearchBoxProps> = (
                 {suggestions.length > 0 && (
                     <ul className="suggestions">
                         {suggestions.map((suggestion, index) => (
-                            <NavLink to={`/models/${suggestion.id}`}>
-                                <li key={index}>
-                                    {suggestion.modelName}
+                            <NavLink to={`/models/${suggestion.id}`} key={index}>
+                                <li>
+                                    <div className="suggestion-item">
+                                        <img
+                                            src={suggestion.preview}
+                                            alt={suggestion.modelName}
+                                            className="suggestion-image"
+                                        />
+                                        <span className="suggestion-name">{suggestion.modelName} </span>
+                                    </div>
                                 </li>
                             </NavLink>
                         ))}
                     </ul>
                 )}
             </div>
+        </StyledSuggests>
     );
 };
+
+const StyledSuggests = styled.div`
+
+    .search-box-container-input {
+        width: 100%; /* Занимает всю ширину своего контейнера */
+        padding: 5px 8px; /* Добавляем немного внутреннего отступа для удобства */
+        box-sizing: border-box; /* Гарантирует, что padding не добавит дополнительную ширину */
+        border: 1px solid #ccc; /* Стилизация границы */
+        border-radius: 4px; /* Скругление углов */
+    }
+    
+    .suggestion-item {
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .suggestion-image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+        border-radius: 4px;
+    }
+
+    .suggestion-name {
+        font-size: 16px;
+    }
+
+    .suggestion-item:hover {
+        background-color: #f0f0f0;
+    }
+
+
+    .suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        z-index: 1000;
+        list-style: none;
+        padding: 0;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        border-top: none;
+        
+        width: 55%; /* Уменьшение ширины контейнера */
+
+        li {
+            padding: 8px 12px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #f0f0f0;
+            }
+        }
+    }
+
+    .suggestions li {
+        padding: 8px 10px;
+        cursor: pointer;
+    }
+
+    .suggestions li:hover,
+    .suggestions li:focus {
+        background-color: #f0f0f0; /* Стиль для наведения и фокуса */
+    }
+`;
 
 export default SearchBox;
