@@ -51,8 +51,8 @@ const Styled = styled.div`
     }
 
     .dropdownMenu button {
-        background-color: #4CAF50; /* Зеленый фон */
-        color: white; /* Белый текст */
+        background-color: ${({ theme }) => theme.colors.helper};
+        color: ${({ theme }) => theme.colors.white};
         padding: 10px 20px;
         font-size: 16px;
         border: none;
@@ -63,8 +63,8 @@ const Styled = styled.div`
     }
 
     .dropdownMenu button:hover, .dropdownMenu button:focus {
-        background-color: #3E8E41; /* Темно-зеленый фон при наведении */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для 3D эффекта */
+        background-color: ${({ theme }) => theme.colors.btn};
+        box-shadow: ${({ theme }) => theme.colors.shadowSupport};
     }
 
     .dropdownMenu dropdownItem {
@@ -74,11 +74,11 @@ const Styled = styled.div`
         margin: 0;
         position: absolute;
         width: 300px; /* Ширина, адаптируйте по необходимости */
-        background-color: white;
-        border: 1px solid #ccc;
+        background-color: ${({ theme }) => theme.colors.card_bg};
+        border: 1px solid ${({ theme }) => theme.colors.border};
         border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        max-height: 600px; /* Увеличенная максимальная высота */
+        box-shadow: ${({ theme }) => theme.colors.shadowSupport};
+        max-height: 600px;
         //overflow-y: auto; /* Поддержка прокрутки */
     }
 `;

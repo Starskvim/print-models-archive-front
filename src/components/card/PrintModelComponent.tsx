@@ -49,17 +49,18 @@ const Styled = styled.section`
     .card-title {
         font-size: 24px;
         font-weight: bold;
-        color: #2c3e50; /* Темно-синий цвет */
+        color: ${({theme}) => theme.colors.heading};
         margin-bottom: 10px;
     }
 
     .card {
         width: 600px;
         margin: 30px auto;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: ${({theme}) => theme.colors.shadow};
         border-radius: 8px;
         overflow: hidden;
-        background: #ffffff;
+        background: ${({theme}) => theme.colors.card_bg};
+        border: 1px solid ${({theme}) => theme.colors.border};
     }
 
     .main-preview {
@@ -72,17 +73,18 @@ const Styled = styled.section`
 
     .card-text {
         font-size: 16px;
-        color: #34495e;
+        color: ${({theme}) => theme.colors.text};
         line-height: 1.5;
     }
 
     a {
-        color: #2980b9;
+        color: ${({theme}) => theme.colors.helper};
         text-decoration: none;
     }
 
     a:hover {
         text-decoration: underline;
+        color: ${({theme}) => theme.colors.btn};
     }
 `;
 

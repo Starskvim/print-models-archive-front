@@ -89,20 +89,26 @@ const StyledSection = styled.section`
 
       button {
         border: none;
-        background-color: ${({ theme }) => theme.colors.white};
+        background-color: ${({ theme }) => theme.colors.bg};
+        color: ${({ theme }) => theme.colors.text};
         text-transform: capitalize;
         cursor: pointer;
         width: 100%;
         text-align: left;
+        padding: 0.8rem 1.2rem;
+        border-radius: 0.4rem;
+        transition: all 0.3s ease;
 
         &:hover {
+          background-color: ${({ theme }) => theme.colors.hr};
           color: ${({ theme }) => theme.colors.btn};
         }
       }
 
       .active {
-        border-bottom: 1px solid #000;
-        color: ${({ theme }) => theme.colors.btn};
+        background-color: ${({ theme }) => theme.colors.btn};
+        color: ${({ theme }) => theme.colors.white};
+        border: 1px solid ${({ theme }) => theme.colors.btn};
       }
     }
   }
@@ -110,7 +116,7 @@ const StyledSection = styled.section`
   .btnStyle {
     width: 2rem;
     height: 2rem;
-    background-color: #000;
+    background-color: ${({ theme }) => theme.colors.text};
     border-radius: 50%;
     margin-left: 1rem;
     border: none;
@@ -129,11 +135,15 @@ const StyledSection = styled.section`
 
   .checkStyle {
     font-size: 1rem;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.white};
   }
 
   .filter-clear .btn {
-    background-color: #ec7063;
-    color: #000;
+    background-color: ${({ theme }) => theme.colors.helper};
+    color: ${({ theme }) => theme.colors.white};
+    
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.btn};
+    }
   }
 `;

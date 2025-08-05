@@ -9,6 +9,8 @@ interface CategoryItemProps {
 
 interface StyledCategoryItemProps {
     level: number;
+    children?: React.ReactNode;
+    className?: string;
 }
 
 const CategoryItem: FC<CategoryItemProps> = ({ category }) => {
@@ -22,7 +24,7 @@ const CategoryItem: FC<CategoryItemProps> = ({ category }) => {
     };
 
     return (
-        <StyledCategoryItem className={isOpen ? 'open' : ''} level={category.level} {...undefined}>
+        <StyledCategoryItem className={isOpen ? 'open' : ''} level={category.level}>
             <button className="category-button" onClick={toggle}>
                 <span onClick={handleCategoryClick} className="category-link">
                     {category.name} - {category.size}
@@ -51,14 +53,14 @@ const StyledCategoryItem = styled.li<StyledCategoryItemProps>`
         padding: 8px 12px;
         cursor: pointer;
         font-size: 16px;
-        color: #333;
+        color: ${({ theme }) => theme.colors.text};
         display: flex;
         justify-content: space-between;
         align-items: center;
         transition: background-color 0.2s ease;
 
         &:hover {
-            background-color: #f8f8f8;
+            background-color: ${({ theme }) => theme.colors.hr};
         }
     }
 
@@ -66,10 +68,11 @@ const StyledCategoryItem = styled.li<StyledCategoryItemProps>`
         flex-grow: 1;
         cursor: pointer;
         text-decoration: none;
-        color: #0645ad;
+        color: ${({ theme }) => theme.colors.btn};
 
         &:hover {
             text-decoration: underline;
+            color: ${({ theme }) => theme.colors.helper};
         }
     }
 
@@ -77,8 +80,8 @@ const StyledCategoryItem = styled.li<StyledCategoryItemProps>`
         list-style: none;
         padding-left: 20px;
         margin: 0;
-        background-color: white;
-        border-left: 1px solid #ccc;
+        background-color: ${({ theme }) => theme.colors.bg};
+        border-left: 1px solid ${({ theme }) => theme.colors.border};
         position: relative;
         max-height: 400px;
         overflow-y: auto;

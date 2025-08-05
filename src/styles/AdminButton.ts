@@ -4,8 +4,8 @@ import {NavLink} from "react-router-dom";
 export const ButtonNavLink = styled(NavLink)`
   text-decoration: none;
   max-width: auto;
-  background-color: rgb(98 84 243);
-  color: rgb(255 255 255);
+  background-color: ${({ theme }) => theme.colors.btn};
+  color: ${({ theme }) => theme.colors.white};
   padding: 1.4rem 2.4rem;
   border: none;
   text-transform: uppercase;
@@ -18,14 +18,13 @@ export const ButtonNavLink = styled(NavLink)`
 
   &:hover,
   &:active {
-    box-shadow: 0 2rem 2rem 0 rgb(132 144 255 / 30%);
     box-shadow: ${({ theme }) => theme.colors.shadowSupport};
     transform: scale(0.96);
   }
 
   a {
     text-decoration: none;
-    color: rgb(255 255 255);
+    color: ${({ theme }) => theme.colors.white};
     font-size: 1.8rem;
   }
 `;
@@ -33,8 +32,8 @@ export const ButtonNavLink = styled(NavLink)`
 export const AdminButton = styled.button`
     text-decoration: none;
     max-width: auto;
-    background-color: rgb(98 84 243);
-    color: rgb(255 255 255);
+    background-color: ${({ theme }) => theme.colors.btn};
+    color: ${({ theme }) => theme.colors.white};
     padding: 1.4rem 2.4rem;
     border: none;
     text-transform: uppercase;
@@ -53,14 +52,13 @@ export const AdminButton = styled.button`
 
     &:hover,
     &:active {
-        box-shadow: 0 2rem 2rem 0 rgb(132 144 255 / 30%);
         box-shadow: ${({ theme }) => theme.colors.shadowSupport};
         transform: scale(0.96);
     }
 
     a {
         text-decoration: none;
-        color: rgb(255 255 255);
+        color: ${({ theme }) => theme.colors.white};
         font-size: 1.8rem;
     }
 `;

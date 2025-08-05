@@ -107,14 +107,21 @@ const StyledSuggests = styled.div`
         width: 100%;
         padding: 12px 16px;
         box-sizing: border-box;
-        border: 1px solid #ccc;
+        border: 1px solid ${({theme}) => theme.colors.border};
         border-radius: 4px;
         font-size: 16px;
+        background-color: ${({theme}) => theme.colors.input_bg};
+        color: ${({theme}) => theme.colors.text};
         
         &:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+            border-color: ${({theme}) => theme.colors.helper};
+            box-shadow: 0 0 0 2px ${({theme}) => theme.colors.border};
             outline: none;
+        }
+        
+        &::placeholder {
+            color: ${({theme}) => theme.colors.text};
+            opacity: 0.6;
         }
     }
     
@@ -122,7 +129,12 @@ const StyledSuggests = styled.div`
         display: flex;
         align-items: center;
         padding: 8px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid ${({theme}) => theme.colors.border};
+        background-color: ${({theme}) => theme.colors.input_bg};
+        
+        &:hover {
+            background-color: ${({theme}) => theme.colors.bg};
+        }
     }
 
     .suggestion-image {
@@ -142,6 +154,7 @@ const StyledSuggests = styled.div`
 
     .suggestion-name {
         font-size: 16px;
+        color: ${({theme}) => theme.colors.text};
     }
 
     .suggestion-metadata {
@@ -154,44 +167,36 @@ const StyledSuggests = styled.div`
         font-size: 16px;
     }
 
-    .suggestion-item:hover {
-        background-color: #f0f0f0;
-    }
-
-
     .suggestions {
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        background: white;
+        background: ${({theme}) => theme.colors.input_bg};
         z-index: 1000;
         list-style: none;
         padding: 0;
         margin: 0 auto;
-        border: 1px solid #ccc;
+        border: 1px solid ${({theme}) => theme.colors.border};
         border-top: none;
+        border-radius: 0 0 4px 4px;
+        box-shadow: ${({theme}) => theme.colors.shadowSupport};
         
-        width: 55%; /* Уменьшение ширины контейнера */
+        width: 55%;
 
         li {
             padding: 8px 12px;
             cursor: pointer;
+            color: ${({theme}) => theme.colors.text};
 
             &:hover {
-                background-color: #f0f0f0;
+                background-color: ${({theme}) => theme.colors.bg};
+            }
+            
+            &:last-child {
+                border-radius: 0 0 4px 4px;
             }
         }
-    }
-
-    .suggestions li {
-        padding: 8px 10px;
-        cursor: pointer;
-    }
-
-    .suggestions li:hover,
-    .suggestions li:focus {
-        background-color: #f0f0f0; /* Стиль для наведения и фокуса */
     }
 `;
 

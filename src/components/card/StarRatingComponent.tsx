@@ -4,21 +4,19 @@ import styled from "styled-components";
 interface StarRatingProps {
     totalStars?: number;
     selectedStars: number;
-
 }
-
-const Star: React.FC<{ selected: boolean }> = ({selected}) => (
-    <span className="star" style={{cursor: 'pointer', color: selected ? 'orange' : 'grey'}}>
-★
-  </span>
-);
 
 const StarRatingComponent: React.FC<StarRatingProps> = ({totalStars = 5, selectedStars}) => {
     return (
         <RatingStyled>
             <div className="star-rating">
                 {Array.from({length: totalStars}, (_, i) => (
-                    <Star key={i} selected={i < selectedStars}/>
+                    <span 
+                        key={i} 
+                        className={`star ${i < selectedStars ? 'selected' : ''}`}
+                    >
+                        ★
+                    </span>
                 ))}
             </div>
         </RatingStyled>
@@ -26,7 +24,6 @@ const StarRatingComponent: React.FC<StarRatingProps> = ({totalStars = 5, selecte
 };
 
 const RatingStyled = styled.section`
-
     .star-rating {
         display: flex;
         justify-content: center;
@@ -34,12 +31,23 @@ const RatingStyled = styled.section`
     }
 
     .star {
-        font-size: 24px; /* Размер звезд */
+        font-size: 24px;
         cursor: pointer;
-        transition: color 0.2s ease-in-out; /* Плавное изменение цвета */
-        //color: #ffeb3b /* Цвет при наведении
-    }
+        color: ${({theme}) => theme.colors.text};
+        transition: color 0.2s ease-in-out;
+        
+        &.selected {
+            color: ${({theme}) => theme.colors.helper};
+        }
 
+        &:hover {
+            color: ${({theme}) => theme.colors.helper};
+        }
+
+        &.selected:hover {
+            color: ${({theme}) => theme.colors.helper};
+        }
+    }
 `;
 
 export default StarRatingComponent;

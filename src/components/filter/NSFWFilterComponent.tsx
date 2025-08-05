@@ -25,9 +25,12 @@ const FilterStyled = styled.section`
     .nsfw-filter {
         padding: 5px 10px;
         margin: 5px 0;
-        background-color: #f7f7f7;  // Светлый фон для чекбокса
-        color: #333;  // Темный цвет текста
+        background-color: ${({ theme }) => theme.colors.card_bg};
+        color: ${({ theme }) => theme.colors.text};
         font-weight: bold;
+        border: 1px solid ${({ theme }) => theme.colors.border};
+        border-radius: 4px;
+        padding: 8px;
         border-radius: 5px;
         display: flex;
         align-items: center;

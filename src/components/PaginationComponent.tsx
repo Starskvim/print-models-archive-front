@@ -1,6 +1,7 @@
 import {preparePages} from "../utils/paginate";
 import React from "react";
-
+import styled from "styled-components";
+import { PageButtonStyled } from "./pagination/PageLinkStyled";
 
 interface PaginationComponentProps {
     itemsCount: number;
@@ -22,25 +23,50 @@ const PaginationComponent: React.FC<PaginationComponentProps> = (
     const pages = preparePages(currentPage, pagesCount);
 
     return (
-        <nav>
-            <ul className="pagination mx-auto" style={{width: 'fit-content'}}>
+        <PaginationContainer>
+            <PaginationList>
                 {pages.map(page => (
                     page !== '...'
-                        ? <li key={page.toString()} className={page === currentPage ? "page-item active" : "page-item"}
-                              style={{width: '50px'}}>
-                            <button className="page-link" style={{textAlign: 'center'}} onClick={() => onPageChange(Number(page))}>
+                        ? <PaginationItem key={page.toString()}>
+                            <PageButtonStyled
+                                active={page === currentPage}
+                                onClick={() => onPageChange(Number(page))}
+                            >
                                 {page}
-                            </button>
-                        </li>
-                        : <li key={page + Math.random()} className="page-item disabled" style={{width: '50px'}}>
-                            <button className="page-link" style={{textAlign: 'center'}} disabled onClick={() => onPageChange(Number(page))}>
+                            </PageButtonStyled>
+                        </PaginationItem>
+                        : <PaginationItem key={page + Math.random()}>
+                            <PageButtonStyled
+                                disabled
+                                onClick={() => onPageChange(Number(page))}
+                            >
                                 {page}
-                            </button>
-                        </li>
+                            </PageButtonStyled>
+                        </PaginationItem>
                 ))}
-            </ul>
-        </nav>
+            </PaginationList>
+        </PaginationContainer>
     );
 };
+
+const PaginationContainer = styled.nav`
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+`;
+
+const PaginationList = styled.ul`
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: fit-content;
+`;
+
+const PaginationItem = styled.li<{ children?: React.ReactNode }>`
+    width: 50px;
+    display: flex;
+`;
 
 export default PaginationComponent;

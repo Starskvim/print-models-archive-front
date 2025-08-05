@@ -3,6 +3,7 @@ import {NavLink} from "react-router-dom";
 import styled from "styled-components";
 
 import {useAppContext} from "../state/AppContext";
+import {useTheme} from "../contexts/ThemeContext";
 import SearchBox from "./SearchBox";
 import RateFilterComponent from "./filter/RateFilterComponent";
 import LogoComponent from "./logo/LogoComponent";
@@ -13,6 +14,7 @@ import {Catalog} from "../types/catalog/Catalog";
 const HeaderComponent = () => {
 
     const {globalState, updateGlobalState} = useAppContext();
+    const {themeMode, toggleTheme} = useTheme();
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -79,6 +81,11 @@ const HeaderComponent = () => {
                                 <NavLink to="/admin" className="navbar-link ">
                                     Admin
                                 </NavLink>
+                            </li>
+                            <li>
+                                <ThemeToggleButton onClick={toggleTheme}>
+                                    {themeMode === 'light' ? '🌙' : '☀️'}
+                                </ThemeToggleButton>
                             </li>
                         </ul>
                     </div>
@@ -204,12 +211,47 @@ const Nav = styled.nav`
 
             &:hover,
             &:active {
-                color: ${({theme}) => theme.colors.black};
+                color: ${({theme}) => theme.colors.helper};
             }
         }
     }
 
     .close-outline {
         display: none;
+    }
+`;
+
+interface ThemeToggleButtonProps {
+    onClick: () => void;
+    children: React.ReactNode;
+}
+
+const ThemeToggleButton = styled.button<ThemeToggleButtonProps>`
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    
+    &:hover {
+        background-color: ${({theme}) => theme.colors.border};
+        transform: scale(1.1);
+    }
+    
+    &:active {
+        transform: scale(0.95);
+    }
+    
+    @media (max-width: 768px) {
+        font-size: 1.8rem;
+        width: 3.5rem;
+        height: 3.5rem;
     }
 `;

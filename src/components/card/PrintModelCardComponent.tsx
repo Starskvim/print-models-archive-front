@@ -15,15 +15,15 @@ const PrintModelCardComponent = (
         product: PrintModelCard
     }
 ) =>
-    <div className="card" style={{width: '300px', margin: 'auto'}}>
+    <CardStyled>
         <AsyncImage
             src={product.preview}
             className="card-img-top"
             cachedImages={{}}
             width={300}
             height={300}
-            bgColor={'hsl(0, 0%, 100%)'}
-            preloadBgColor={'hsl(0, 0%, 75%)'}
+            bgColor={undefined}
+            preloadBgColor={undefined}
         />
         <div className="card-body">
             <NavStyled>
@@ -40,11 +40,42 @@ const PrintModelCardComponent = (
                 </div>
             </DivRowStyled>
         </div>
-    </div>;
+    </CardStyled>;
 
+
+const CardStyled = styled.div`
+    width: 300px;
+    margin: auto;
+    background-color: ${({theme}) => theme.colors.card_bg};
+    border: 1px solid ${({theme}) => theme.colors.border};
+    border-radius: 8px;
+    box-shadow: ${({theme}) => theme.colors.shadowSupport};
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: ${({theme}) => theme.colors.shadow};
+    }
+    
+    .card-img-top {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+    
+    .card-body {
+        padding: 16px;
+    }
+    
+    .card-text {
+        color: ${({theme}) => theme.colors.text};
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+`;
 
 const NavStyled = styled.nav`
-
     .navbar-link {
         &:link,
         &:visited {
@@ -53,7 +84,7 @@ const NavStyled = styled.nav`
             text-decoration: none;
             font-size: 1.8rem;
             font-weight: 500;
-                // color: ${({theme}) => theme.colors.black};
+            color: ${({theme}) => theme.colors.heading};
             transition: color 0.3s linear;
         }
 

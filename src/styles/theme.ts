@@ -1,6 +1,6 @@
 import {DefaultTheme} from "styled-components";
 
-const theme : DefaultTheme = {
+export const lightTheme: DefaultTheme = {
     colors: {
         heading: "rgb(24 24 29)",
         text: "rgba(29 ,29, 29, .8)",
@@ -9,6 +9,8 @@ const theme : DefaultTheme = {
         helper: "#8490ff",
 
         bg: "#F6F8FA",
+        card_bg: "#ffffff",
+        input_bg: "#ffffff",
         footer_bg: "#6d96ea",
         header_bg: "#6d96ea",
         btn: "rgb(98 84 243)",
@@ -26,4 +28,34 @@ const theme : DefaultTheme = {
     },
 };
 
-export default theme
+export const darkTheme: DefaultTheme = {
+    colors: {
+        heading: "#ffffff",
+        text: "#e0e0e0",
+        white: "#e0e0e0",
+        black: "#ffffff",
+        helper: "#9ca3ff",
+
+        bg: "#1a1a1a",
+        card_bg: "#2d2d2d",
+        input_bg: "#333333",
+        footer_bg: "#2d2d2d",
+        header_bg: "#2d2d2d",
+        btn: "rgb(120 104 255)",
+        border: "rgba(120, 104, 255, 0.6)",
+        hr: "#4a4a4a",
+        gradient:
+            "linear-gradient(0deg, rgb(150 160 255) 0%, rgb(120 200 255) 100%)",
+        shadow:
+            "rgba(0, 0, 0, 0.3) 0px 2px 8px 0px, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px;",
+        shadowSupport: "rgba(0, 0, 0, 0.4) 0px 2px 8px",
+    },
+    media: {
+        mobile: "768px",
+        tab: "998px",
+    },
+};
+
+// Default export for backward compatibility
+const theme = lightTheme;
+export default theme;

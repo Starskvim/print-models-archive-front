@@ -15,8 +15,9 @@ export const GlobalStyle = createGlobalStyle`
 
     body {
         overflow-x: hidden;
-        //background-color: rgba(232, 64, 64, 0.96); // Пример цвета фона
-        scrollbar-color: rgb(98 84 243);
+        background-color: ${({theme}) => theme.colors.bg};
+        color: ${({theme}) => theme.colors.text};
+        scrollbar-color: ${({theme}) => theme.colors.btn};
         scrollbar-width: thin;
     }
 
@@ -25,11 +26,11 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     body::-webkit-scrollbar-track {
-        background-color: rgb(24 24 29);
+        background-color: ${({theme}) => theme.colors.bg};
     }
 
     body::-webkit-scrollbar-thumb {
-        background: #fff;
+        background: ${({theme}) => theme.colors.text};
         border: 5px solid transparent;
         border-radius: 9px;
         background-clip: content-box;
@@ -52,6 +53,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     h3 {
+        color: ${({theme}) => theme.colors.heading};
         font-size: 1.8rem;
         font-weight: 400;
     }
@@ -107,7 +109,7 @@ export const GlobalStyle = createGlobalStyle`
     .intro-data {
         margin-bottom: 0;
         text-transform: uppercase;
-        color: #5138ee;
+        color: ${({theme}) => theme.colors.helper};
     }
 
     .caption {
