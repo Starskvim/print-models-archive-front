@@ -30,6 +30,7 @@ const FilterSectionComponent: React.FC <FilterSectionComponentProps> = (
                             value={category.name}
                             className={selectedCategory === category.name ? "active" : ""}
                             onClick={onCategoryChange(category.name)}
+                            title={`${category.name} (${category.size} items)`}
                         >
                             {truncateString(category.name, 6)} - {category.size}
                         </button>
@@ -48,10 +49,13 @@ const StyledSection = styled.section`
   flex-direction: column;
   gap: 3rem;
   text-overflow: ellipsis;
+  max-height: calc(100vh - 200px);
+  overflow: hidden;
 
   h3 {
     padding: 2rem 0;
     font-size: bold;
+    flex-shrink: 0;
   }
 
   .filter-category {
@@ -60,12 +64,36 @@ const StyledSection = styled.section`
       flex-direction: column;
       align-items: flex-start;
       gap: 1.4rem;
+      max-height: calc(100vh - 300px);
+      overflow-y: auto;
+      padding-right: 0.5rem;
+
+      /* Custom scrollbar styling */
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: ${({ theme }) => theme.colors.bg};
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: ${({ theme }) => theme.colors.btn};
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: ${({ theme }) => theme.colors.border};
+      }
 
       button {
         border: none;
         background-color: ${({ theme }) => theme.colors.white};
         text-transform: capitalize;
         cursor: pointer;
+        width: 100%;
+        text-align: left;
 
         &:hover {
           color: ${({ theme }) => theme.colors.btn};

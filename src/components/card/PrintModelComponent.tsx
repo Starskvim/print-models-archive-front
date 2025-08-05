@@ -17,15 +17,6 @@ const PrintModelComponent = (
 ) =>
     <Styled>
         <div className="card">
-            <AsyncImage
-                src={product?.preview}
-                className="main-preview"
-                width={300}
-                height={300}
-                cachedImages={{}}
-                bgColor={'hsl(0, 0%, 100%)'}
-                preloadBgColor={'hsl(0, 0%, 75%)'}
-            />
             <div className="card-body">
                 <h5 className="card-title">{product.modelName}</h5>
                 <p className="card-text">Path - {product.path}</p>

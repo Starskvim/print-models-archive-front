@@ -88,20 +88,17 @@ const ModelsPageComponent: React.FC<ModelsPageProps> = ({}) => {
 
 const Styled = styled.section`
     .grid-filter-column {
-        //grid-template-columns: 0.1fr 1fr;
         display: grid;
-        grid-template-columns: 100px 1fr; // Фиксированная ширина для фильтра и оставшееся пространство для карточек
-        gap: 20px; // Добавляем немного пространства между колонками
-        padding: 20px; // Общий отступ для секции
-        height: 100%; // Занимает полную доступную высоту
-        
+        grid-template-columns: 180px 1fr;
+        gap: 20px;
+        padding: 20px;
+        align-items: start;
     }
-
 
     @media (max-width: ${({theme}) => theme.media.mobile}) {
         .grid-filter-column {
-            grid-template-columns: 1fr; // Всё пространство для мобильных устройств
-            gap: 10px; // Меньше пространства между компонентами на мобильных
+            grid-template-columns: 1fr;
+            gap: 10px;
         }
     }
 `;
