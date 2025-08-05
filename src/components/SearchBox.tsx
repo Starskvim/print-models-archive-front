@@ -4,6 +4,8 @@ import {fetchSuggestionsPrintModels} from "../services/ProductService";
 import {NavLink} from "react-router-dom";
 import styled from "styled-components";
 import {PrintModelSuggest} from "../types/PrintModelSuggest";
+import StarRatingComponent from './card/StarRatingComponent';
+import NSFWIndicatorComponent from './card/NSFWIndicatorComponent';
 
 interface SearchBoxProps {
     value: string | undefined;
@@ -69,7 +71,13 @@ const SearchBox: React.FC<SearchBoxProps> = (
                                             alt={suggestion.modelName}
                                             className="suggestion-image"
                                         />
-                                        <span className="suggestion-name">{suggestion.modelName} </span>
+                                        <div className="suggestion-content">
+                                            <span className="suggestion-name">{suggestion.modelName}</span>
+                                            <div className="suggestion-metadata">
+                                                <StarRatingComponent selectedStars={suggestion.rate} totalStars={5} />
+                                                <NSFWIndicatorComponent isVisible={suggestion.nsfw} />
+                                            </div>
+                                        </div>
                                     </div>
                                 </li>
                             </NavLink>
@@ -82,32 +90,32 @@ const SearchBox: React.FC<SearchBoxProps> = (
 };
 
 const StyledSuggests = styled.div`
+    width: 100%;
+    position: relative;
 
     .search-box-container-element {
-        //flex: auto; // Оба элемента занимают равное пространство
         flex-grow: 1;
         width: 100%;
-        margin: 0 5px; // Добавляем немного пространства с обеих сторон
-        padding: 10px 15px; // Увеличенные отступы для лучшего внешнего вида
-        font-size: 16px; // Больший размер шрифта для улучшения читаемости
-        border: 1px solid #ccc; // Тонкая рамка вокруг поля
-        border-radius: 5px; // Скругленные углы для современного вида
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); // Внутренняя тень для глубины
-        transition: border-color 0.3s ease-in-out; // Плавное изменение цвета границы
-
-        &:focus {
-            border-color: #007bff; // Синий цвет границы при фокусе
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 8px rgba(0, 123, 255, 0.5); // Увеличение тени при фокусе
-            outline: none; // Убираем стандартный контур
-        }
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: transparent;
+        position: relative;
     }
 
     .search-box-container-input {
-        width: 100%; /* Занимает всю ширину своего контейнера */
-        padding: 5px 8px; /* Добавляем немного внутреннего отступа для удобства */
-        box-sizing: border-box; /* Гарантирует, что padding не добавит дополнительную ширину */
-        border: 1px solid #ccc; /* Стилизация границы */
-        border-radius: 4px; /* Скругление углов */
+        width: 100%;
+        padding: 12px 16px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        
+        &:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
     }
     
     .suggestion-item {
@@ -125,7 +133,24 @@ const StyledSuggests = styled.div`
         border-radius: 4px;
     }
 
+    .suggestion-content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 4px;
+    }
+
     .suggestion-name {
+        font-size: 16px;
+    }
+
+    .suggestion-metadata {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .suggestion-metadata .star {
         font-size: 16px;
     }
 

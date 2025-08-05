@@ -11,23 +11,25 @@ const LogoComponent = () => {
 export default LogoComponent
 
 const Styled = styled.div`
-    body {
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-        //justify-content: center;
-        //align-items: center;
-        background: #a3001e;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 150px;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
 
     .pikachu {
-        margin-left: -3vmin;
-        margin-bottom: 8vmin;
+        margin-left: 0;
+        margin-bottom: 0;
         position: relative;
         width: 1em;
         height: 1em;
-        font-size: 0.20vmin;
+        font-size: 2vmin;
         background: transparent;
+        transform: scale(0.7);
+        transform-origin: center;
         box-shadow: 0em 0em #444444, 1em 0em #444444, 0em 1em #444444, 1em 1em #444444,
         2em 1em #444444, 3em 1em #444444, 1em 2em #444444, 2em 2em #444444,
         3em 2em #444444, 4em 2em #444444, 5em 2em #444444, 28em 2em #388eff,
