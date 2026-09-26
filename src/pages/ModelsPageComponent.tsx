@@ -1,46 +1,38 @@
-import React, {useEffect} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 
 import {fetchModelCards} from "../services/ProductService";
 import PrintModelCardsComponent from "../components/card/PrintModelCardsComponent";
+import SkeletonCard from "../components/card/SkeletonCard";
 import {PAGE_SIZE} from "../configuration/Config";
 import {useAppContext} from "../state/AppContext";
 import FilterSectionComponent from "../components/filter/FilterSectionComponent";
 import styled from "styled-components";
 
-interface ModelsPageProps {
-    categoryName?: string;
-}
+type LoadStatus = 'loading' | 'error' | 'ready';
 
-const ModelsPageComponent: React.FC<ModelsPageProps> = ({}) => {
+const ModelsPageComponent: React.FC = () => {
 
     const { categoryName } = useParams<{ categoryName?: string }>();
 
     const {globalState, updateGlobalState} = useAppContext();
 
-    useEffect(() => {
-        updateModelCards();
-        window.scrollTo(0, 0);
-    }, [
-        categoryName,
-        globalState.currentPage,
-        globalState.rate,
-        globalState.searchQuery,
-        globalState.nsfwOnly,
-        globalState.selectedCategory
-    ]); // hook on state
+    const [status, setStatus] = useState<LoadStatus>('loading');
+    const [retryTick, setRetryTick] = useState(0);
 
-    const updateModelCards = async () => {
-        ///
-        let categoryForQuery
+    useEffect(() => {
+        let cancelled = false;
+        setStatus('loading');
+        window.scrollTo(0, 0);
+
+        let categoryForQuery: string | undefined;
         if (categoryName !== 'all' && categoryName !== undefined) {
-            categoryForQuery = categoryName
+            categoryForQuery = categoryName;
         } else {
-            categoryForQuery = globalState.selectedCategory
+            categoryForQuery = globalState.selectedCategory;
         }
-        console.log("categoryForQuery " + categoryForQuery)
-        ///
-        const response = await fetchModelCards(
+
+        fetchModelCards(
             globalState.currentPage,
             PAGE_SIZE,
             undefined,
@@ -48,22 +40,41 @@ const ModelsPageComponent: React.FC<ModelsPageProps> = ({}) => {
             categoryForQuery,
             globalState.rate,
             globalState.nsfwOnly
-        );
-        updateGlobalState(
-            {
-                products: response.models? response.models : [],
-                size: response.totalElements,
-                totalPages: response.totalPages
-            },
-        );
-    };
+        )
+            .then(response => {
+                if (cancelled) return;
+                updateGlobalState(
+                    {
+                        products: response.models ? response.models : [],
+                        size: response.totalElements,
+                        totalPages: response.totalPages
+                    },
+                );
+                setStatus('ready');
+            })
+            .catch(() => {
+                if (cancelled) return;
+                setStatus('error');
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [
+        categoryName,
+        globalState.currentPage,
+        globalState.rate,
+        globalState.searchQuery,
+        globalState.nsfwOnly,
+        globalState.selectedCategory,
+        retryTick
+    ]); // hook on state
 
     const handlePageClick = (target: number) => {
         updateGlobalState({currentPage: target});
     };
 
     const handleCategoryChange = (category: string) => () => {
-        console.log("handleCategoryChange - " + category);
         updateGlobalState({currentPage: 1, selectedCategory: category});
     }
 
@@ -75,12 +86,34 @@ const ModelsPageComponent: React.FC<ModelsPageProps> = ({}) => {
                         selectedCategory={globalState.selectedCategory}
                         onCategoryChange={handleCategoryChange}
                     />
-                    <PrintModelCardsComponent
-                        products={globalState.products}
-                        size={globalState.size}
-                        currentPage={globalState.currentPage}
-                        onPageChange={handlePageClick}
-                    />
+                    {status === 'loading' && (
+                        <div className="row">
+                            {Array.from({length: Number(PAGE_SIZE)}).map((_, index) => (
+                                <div className="col my-3" key={index}>
+                                    <SkeletonCard/>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {status === 'error' && (
+                        <ErrorBlock>
+                            <p>Failed to load models</p>
+                            <button onClick={() => setRetryTick(tick => tick + 1)}>
+                                Try again
+                            </button>
+                        </ErrorBlock>
+                    )}
+                    {status === 'ready' && globalState.products.length === 0 && (
+                        <EmptyBlock>No models found</EmptyBlock>
+                    )}
+                    {status === 'ready' && globalState.products.length > 0 && (
+                        <PrintModelCardsComponent
+                            products={globalState.products}
+                            size={globalState.size}
+                            currentPage={globalState.currentPage}
+                            onPageChange={handlePageClick}
+                        />
+                    )}
             </div>
         </Styled>
     );
@@ -101,6 +134,43 @@ const Styled = styled.section`
             gap: 10px;
         }
     }
+`;
+
+const ErrorBlock = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 60px 20px;
+    color: ${({theme}) => theme.colors.text};
+
+    p {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    button {
+        background-color: ${({theme}) => theme.colors.btn};
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 24px;
+        font-size: 16px;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+`;
+
+const EmptyBlock = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: ${({theme}) => theme.colors.text};
+    font-size: 18px;
 `;
 
 export default ModelsPageComponent;

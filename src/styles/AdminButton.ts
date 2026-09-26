@@ -56,6 +56,12 @@ export const AdminButton = styled.button`
         transform: scale(0.96);
     }
 
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
     a {
         text-decoration: none;
         color: ${({ theme }) => theme.colors.white};

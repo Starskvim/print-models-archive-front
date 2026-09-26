@@ -2,26 +2,21 @@ import http from './ApiService';
 import {API_ADMIN} from "../configuration/Config";
 
 export async function createArchive() {
-    const input = await http.post(API_ADMIN + "/create-archive")
-    console.log("createArchive - " + input)
+    await http.post(API_ADMIN + "/create-archive")
 }
 
 export async function updateArchive() {
-    const input = await http.post(API_ADMIN + "/update-archive")
-    console.log("update-archive - " + input)
+    await http.post(API_ADMIN + "/update-archive")
 }
 
 export async function clearArchive() {
-    const input = await http.del(API_ADMIN + "/clear-archive")
-    console.log("clearArchive - " + input)
+    await http.del(API_ADMIN + "/clear-archive")
 }
 
 export async function checkFolders() {
-    const input = await http.get(API_ADMIN + "/check-folders")
-    console.log("checkFolders - " + input)
+    await http.get(API_ADMIN + "/check-folders")
 }
 
 export async function recreateS3() {
-    const input = await http.put(API_ADMIN + "/recreate-bucket")
-    console.log("recreate-bucket - " + input)
+    await http.put(API_ADMIN + "/recreate-bucket")
 }

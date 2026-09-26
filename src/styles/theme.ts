@@ -11,6 +11,7 @@ export const lightTheme: DefaultTheme = {
         bg: "#F6F8FA",
         card_bg: "#ffffff",
         input_bg: "#ffffff",
+        skeleton: "rgba(0, 0, 0, 0.08)",
         footer_bg: "#6d96ea",
         header_bg: "#6d96ea",
         btn: "rgb(98 84 243)",
@@ -21,6 +22,8 @@ export const lightTheme: DefaultTheme = {
         shadow:
             "rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;",
         shadowSupport: " rgba(0, 0, 0, 0.16) 0px 1px 4px",
+        success: "#28a745",
+        error: "#dc3545",
     },
     media: {
         mobile: "768px",
@@ -39,6 +42,7 @@ export const darkTheme: DefaultTheme = {
         bg: "#1a1a1a",
         card_bg: "#2d2d2d",
         input_bg: "#333333",
+        skeleton: "rgba(255, 255, 255, 0.12)",
         footer_bg: "#2d2d2d",
         header_bg: "#2d2d2d",
         btn: "rgb(120 104 255)",
@@ -49,6 +53,8 @@ export const darkTheme: DefaultTheme = {
         shadow:
             "rgba(0, 0, 0, 0.3) 0px 2px 8px 0px, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px;",
         shadowSupport: "rgba(0, 0, 0, 0.4) 0px 2px 8px",
+        success: "#28a745",
+        error: "#dc3545",
     },
     media: {
         mobile: "768px",

@@ -12,6 +12,7 @@ declare module 'styled-components' {
             bg: string;
             card_bg: string;
             input_bg: string;
+            skeleton: string;
             footer_bg: string;
             header_bg: string;
             btn: string;
@@ -20,6 +21,8 @@ declare module 'styled-components' {
             gradient: string;
             shadow: string;
             shadowSupport: string;
+            success: string;
+            error: string;
         },
         media: {
             mobile: string;

@@ -58,5 +58,6 @@
     "@types/react-helmet": "^6.1.11",
     "@types/styled-components": "^5.1.34",
     "react-scripts": "^5.0.1"
-  }
+  },
+  "packageManager": "yarn@4.18.1"
 }
