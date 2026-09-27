@@ -43,11 +43,13 @@ Done & verified (`npx tsc --noEmit`, `yarn build`, and the 5 TDD tests in `src/p
 - Header search/filter UX (`HeaderComponent.tsx` + `RateFilterComponent.tsx` + `NSFWFilterComponent.tsx` + `SearchBox.tsx`): per-keystroke refetch (no debounce), no "clear all", no "All" option in category filter, no active-filter summary.
 - Model detail page `src/pages/ModelPageComponent.tsx` (TDD, 5 tests): loading skeleton slider (`data-testid="slider-skeleton"`) + `SkeletonCard` instead of the old `<p>Error</p>`; error block (message + "Try again" retry + "← Catalog" link); try/catch, race-guard on fetch (`cancelled`), retry via `retryTick`; theme-aware slider (removed hardcoded white bg/indicators, uses `theme.colors.*`); responsive width (`max-width: 600px; width: 100%`). Removed console.log from `src/services/ProductService.ts`.
 
-Mock / verify (this session):
+Mock / verify:
 - `scripts/mock-api.js`: OPTIONS preflight returned 204 **without `res.end()`** → Node HTTP clients hang (browsers fine). Fixed: added `res.end()` (OPTIONS now sends a proper 204).
 - This env's Node 24.19 gotcha: `http.request` (url or host/port forms) is broken — `AggregateError ECONNREFUSED` (dual-stack) or timeout + `ECONNRESET`; `http.get` and global `fetch` work. The CORS preflight check in `scripts/verify-mock.js` therefore uses **`fetch`**, not `http.request`.
 - `verify-mock.js` compile-check now accepts `Compiled with warnings` (CRA prints that, not `Compiled successfully`).
 - Verified against fixed mock: GET → 200, OPTIONS → 204 (via `fetch`); all 14 endpoint checks pass.
+
+Repo state (2026-09-27): all of the above is committed and pushed; working tree clean. Git remote is named `master` and the only branch is `master` (no `main`) — push with `git push master master`. Open question for the user: `.yarnrc.yml` has `approvedGitRepositories: "**"` and `npmMinimalAgeGate: 0` (relaxed supply-chain checks), committed as-is.
 
 Next: **pending user pick.** Admin visual pass (light+dark) — user confirmed OK.
 - Mock setup for visual checks without the backend (verified working): `node scripts/mock-api.js` (localhost:3001, 24 sample models, picsum placeholder images, admin actions return 200) + `yarn start:mock` (env from `.env.mock`; `REACT_APP_IMG_S3_URL=` is empty so mock `preview`s are full URLs).
