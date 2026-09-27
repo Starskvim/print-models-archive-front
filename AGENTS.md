@@ -18,7 +18,8 @@
 ## Environment variables (gotchas)
 
 - All config is `REACT_APP_*` env vars read in `src/configuration/Config.ts`, **baked into the bundle at build time** — there is no runtime configuration.
-- `.env.local` and `.env.production` are gitignored but tracked (committed before being ignored), so they exist in the repo and edits show as changes.
+- `.env.local` and `.env.production` are gitignored but tracked (committed before being ignored), so they exist in the repo and edits show as changes. `.env.mock` (localhost:3001 mock URLs, no secrets) is tracked normally.
+- `build/` is gitignored (CRA output; static assets live in `public/`).
 - `yarn start` → dotenv-cli loads `.env.local`; `yarn start:p` → dotenv-cli loads `.env.production` (still a dev server, not static files).
 - Gotcha: plain `yarn build` uses CRA's native env loading where **`.env.local` shadows `.env.production`** — the production bundle gets the dev API host. Verified by inspecting `build/`.
 
@@ -51,4 +52,3 @@ Mock / verify (this session):
 Next: **pending user pick.** Admin visual pass (light+dark) — user confirmed OK.
 - Mock setup for visual checks without the backend (verified working): `node scripts/mock-api.js` (localhost:3001, 24 sample models, picsum placeholder images, admin actions return 200) + `yarn start:mock` (env from `.env.mock`; `REACT_APP_IMG_S3_URL=` is empty so mock `preview`s are full URLs).
 - Running verify: `node scripts/verify-mock.js --keep-running` (keeps mock on 3001 + dev on 3000 alive; supervisor PID logged, stop with `taskkill /F /PID <pid> /T`). **Needs 3000/3001 free** — stop any running stack first (it spawns its own mock on 3001).
-- Housekeeping: `src/components/card/SkeletonCard.tsx` and `src/components/ErrorBlock.tsx` are untracked (add before committing).
