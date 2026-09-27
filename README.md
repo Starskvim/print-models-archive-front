@@ -1,8 +1,11 @@
 ## Docker
 
 docker build -t starskvim/starskvim-archive-front .
-docker run -p 3000:3000 starskvim-archive-front
+docker run -p 3000:80 starskvim/starskvim-archive-front
 docker push starskvim/starskvim-archive-front
+
+The image serves the static build via nginx on port 80. The env profile is baked in at build time
+(default `.env.production`); pick another with `--build-arg ENV_FILE=.env.local`.
 
 ## Install Yarn
 

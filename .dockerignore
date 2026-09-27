@@ -1,0 +1,7 @@
+node_modules
+build
+logs
+.git
+.idea
+.yarn/cache
+.yarn/install-state.gz

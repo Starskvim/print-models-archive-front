@@ -8,7 +8,7 @@
 
 ## Commands
 
-- Package manager is **Yarn 4** (`packageManager` field, `nodeLinker: node-modules`). Use `yarn`, not npm — the tracked `package-lock.json` is a leftover; Docker and README both use yarn.
+- Package manager is **Yarn 4** (`packageManager` field, `nodeLinker: node-modules`). Use `yarn`, not npm — the tracked `package-lock.json` is a leftover; Docker (via corepack) and README both use yarn.
 - `yarn start` — dev server on :3000 (loads `.env.local` via dotenv-cli).
 - There are **no lint or typecheck scripts**:
   - Typecheck: `npx tsc --noEmit`
@@ -25,7 +25,10 @@
 
 ## Docker / deployment
 
-- The Dockerfile runs `yarn build`, but `CMD` is `yarn start:p`: the container serves webpack-dev-server on :3000, **not** `build/`. To change deployed API URLs, edit `.env.production` and rebuild the image.
+- Multi-stage `Dockerfile`: `node:20-alpine` + `corepack enable` (Yarn 4 from `packageManager`; `.yarnrc.yml` must be copied before `yarn install --immutable`, otherwise Yarn picks PnP) → `nginx:alpine` serving `build/` on **port 80** with SPA fallback (`try_files $uri /index.html`). Run: `docker run -p 3000:80 <image>`.
+- Env profile is chosen at **image build time**: `ARG ENV_FILE=.env.production`, built via `yarn dotenv -e $ENV_FILE react-scripts build` (bypasses the `.env.local`-shadowing gotcha above). Other profile: `docker build --build-arg ENV_FILE=.env.local .`. One image per environment; to change API URLs, edit the env file and rebuild.
+- `.dockerignore` excludes host `node_modules`/`build`/`.git` (without it `COPY . .` overwrote the container's Linux `node_modules`).
+- Verified (Docker 29.2.1): build passes; baked API host matches the chosen env file; `/`, `/models/123`, `/admin` → 200; image ~98 MB.
 
 ## Code conventions
 
