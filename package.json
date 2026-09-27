@@ -31,6 +31,7 @@
   "scripts": {
     "start": "dotenv -e .env.local react-scripts start",
     "start:p": "dotenv -e .env.production react-scripts start",
+    "start:mock": "dotenv -e .env.mock react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

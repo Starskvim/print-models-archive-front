@@ -13,7 +13,7 @@
 - There are **no lint or typecheck scripts**:
   - Typecheck: `npx tsc --noEmit`
   - ESLint (`react-app` preset) only runs inside `start`/`build`.
-- Tests: there are currently **zero test files**; `yarn test` exits 1 with "No tests found". To run one file once added: `CI=true yarn test path/to/file.test.tsx`. `src/setupTests.ts` loads `@testing-library/jest-dom`.
+- Tests: `yarn test` runs all suites (currently 5 tests in `src/pages/ModelPageComponent.test.tsx`). To run one file: `CI=true yarn test path/to/file.test.tsx`. `src/setupTests.ts` loads `@testing-library/jest-dom`.
 
 ## Environment variables (gotchas)
 
@@ -36,8 +36,19 @@
 
 Direction chosen by user: improve frontend **UX & reliability**. Scope so far: catalog + admin panel.
 
-Done & verified (`npx tsc --noEmit` and `yarn build` both pass):
+Done & verified (`npx tsc --noEmit`, `yarn build`, and the 5 TDD tests in `src/pages/ModelPageComponent.test.tsx` all pass):
 - Catalog `src/pages/ModelsPageComponent.tsx`: loading/error/empty states, skeleton cards (`src/components/card/SkeletonCard.tsx`), race-guard on fetch, removed console.log.
 - Admin `src/pages/AdminPageComponent.tsx`: per-action feedback (Running... / OK / Failed(status)), all buttons disabled while any action runs, try/catch around service calls; added `success`/`error` theme tokens (`theme.ts` + `styled.d.ts`); `AdminButton` disabled style; removed 5 console.log from `src/services/AdminService.ts`.
+- Header search/filter UX (`HeaderComponent.tsx` + `RateFilterComponent.tsx` + `NSFWFilterComponent.tsx` + `SearchBox.tsx`): per-keystroke refetch (no debounce), no "clear all", no "All" option in category filter, no active-filter summary.
+- Model detail page `src/pages/ModelPageComponent.tsx` (TDD, 5 tests): loading skeleton slider (`data-testid="slider-skeleton"`) + `SkeletonCard` instead of the old `<p>Error</p>`; error block (message + "Try again" retry + "← Catalog" link); try/catch, race-guard on fetch (`cancelled`), retry via `retryTick`; theme-aware slider (removed hardcoded white bg/indicators, uses `theme.colors.*`); responsive width (`max-width: 600px; width: 100%`). Removed console.log from `src/services/ProductService.ts`.
 
-Next: **not yet decided — confirm with user.** Candidates: visual pass of `/admin` (light+dark) via `yarn start`; then pick the next area (e.g. model detail page reliability, search/filter UX).
+Mock / verify (this session):
+- `scripts/mock-api.js`: OPTIONS preflight returned 204 **without `res.end()`** → Node HTTP clients hang (browsers fine). Fixed: added `res.end()` (OPTIONS now sends a proper 204).
+- This env's Node 24.19 gotcha: `http.request` (url or host/port forms) is broken — `AggregateError ECONNREFUSED` (dual-stack) or timeout + `ECONNRESET`; `http.get` and global `fetch` work. The CORS preflight check in `scripts/verify-mock.js` therefore uses **`fetch`**, not `http.request`.
+- `verify-mock.js` compile-check now accepts `Compiled with warnings` (CRA prints that, not `Compiled successfully`).
+- Verified against fixed mock: GET → 200, OPTIONS → 204 (via `fetch`); all 14 endpoint checks pass.
+
+Next: **pending user pick.** Admin visual pass (light+dark) — user confirmed OK.
+- Mock setup for visual checks without the backend (verified working): `node scripts/mock-api.js` (localhost:3001, 24 sample models, picsum placeholder images, admin actions return 200) + `yarn start:mock` (env from `.env.mock`; `REACT_APP_IMG_S3_URL=` is empty so mock `preview`s are full URLs).
+- Running verify: `node scripts/verify-mock.js --keep-running` (keeps mock on 3001 + dev on 3000 alive; supervisor PID logged, stop with `taskkill /F /PID <pid> /T`). **Needs 3000/3001 free** — stop any running stack first (it spawns its own mock on 3001).
+- Housekeeping: `src/components/card/SkeletonCard.tsx` and `src/components/ErrorBlock.tsx` are untracked (add before committing).

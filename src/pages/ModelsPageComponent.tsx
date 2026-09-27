@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom';
 import {fetchModelCards} from "../services/ProductService";
 import PrintModelCardsComponent from "../components/card/PrintModelCardsComponent";
 import SkeletonCard from "../components/card/SkeletonCard";
+import ErrorBlock from "../components/ErrorBlock";
 import {PAGE_SIZE} from "../configuration/Config";
 import {useAppContext} from "../state/AppContext";
 import FilterSectionComponent from "../components/filter/FilterSectionComponent";
@@ -132,34 +133,6 @@ const Styled = styled.section`
         .grid-filter-column {
             grid-template-columns: 1fr;
             gap: 10px;
-        }
-    }
-`;
-
-const ErrorBlock = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    padding: 60px 20px;
-    color: ${({theme}) => theme.colors.text};
-
-    p {
-        margin: 0;
-        font-size: 18px;
-    }
-
-    button {
-        background-color: ${({theme}) => theme.colors.btn};
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        padding: 10px 24px;
-        font-size: 16px;
-        cursor: pointer;
-
-        &:hover {
-            opacity: 0.9;
         }
     }
 `;

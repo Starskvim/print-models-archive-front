@@ -20,9 +20,7 @@ import {SuggestionsResponse} from "../types/SuggestionsResponse";
 
 export async function getModelCard(id: String): Promise<PrintModel> {
     const requestUrl = API_MODELS + "/" + id
-    console.log("before requestUrl - " + requestUrl)
     const input = await http.get(requestUrl) as PrintModelResponse
-    console.log("after requestUrl - " + input.model.modelName)
     prepareModelImgUrls(input.model)
     return input.model
 }
@@ -59,7 +57,6 @@ export async function fetchModelCards(
         params.append('nsfwOnly', String(nsfwOnly));
     }
     const url = API_MODELS + "?" + params.toString();
-    console.log("fetchModelCards url - " + url)
     const input = await http.get(url) as PrintModelsResponse
     prepareCardImgUrls(input.models)
     return input
@@ -74,7 +71,6 @@ export async function fetchSuggestionsModelCards(
     }
     params.append('size', String(3));
     const url = API_MODELS + "?" + params.toString();
-    console.log("fetchModelCards url - " + url)
     const input = await http.get(url) as PrintModelsResponse
     prepareCardImgUrls(input.models)
     return input
@@ -84,15 +80,14 @@ export async function fetchSuggestionsPrintModels(
     query: string,
 ): Promise<SuggestionsResponse> {
     const url = API_MODELS + "/suggestions/" + query;
-    console.log("fetchModelCards url - " + url)
     const input = await http.get(url) as SuggestionsResponse
     prepareSuggestImgUrls(input.suggestions)
     return input
 }
 
 function prepareModelImgUrls(model: PrintModel) {
-    model.preview = IMG_S3_URL + model?.preview;
-    model.oths.forEach((oth) => {
+    model.preview = IMG_S3_URL + model.preview;
+    model.oths?.forEach((oth) => {
         oth.preview = IMG_S3_URL + oth.preview;
     })
 }

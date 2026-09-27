@@ -42,7 +42,7 @@ const PrintModelComponent = (
 
 const Styled = styled.section`
 
-    @media (max-width: ${({theme}) => theme.media.mobile}) {
+    @media (max-width: 768px) {
         padding: 0 2.4rem;
     }
 
@@ -54,7 +54,8 @@ const Styled = styled.section`
     }
 
     .card {
-        width: 600px;
+        width: 100%;
+        max-width: 600px;
         margin: 30px auto;
         box-shadow: ${({theme}) => theme.colors.shadow};
         border-radius: 8px;
