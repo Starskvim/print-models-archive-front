@@ -13,7 +13,7 @@
 - There are **no lint or typecheck scripts**:
   - Typecheck: `npx tsc --noEmit`
   - ESLint (`react-app` preset) only runs inside `start`/`build`.
-- Tests: `yarn test` runs all suites (currently 5 tests in `src/pages/ModelPageComponent.test.tsx`). To run one file: `CI=true yarn test path/to/file.test.tsx`. `src/setupTests.ts` loads `@testing-library/jest-dom`.
+- Tests: `yarn test` runs all suites (currently 12 tests: 5 in `src/pages/ModelPageComponent.test.tsx`, 7 in `src/components/SearchBox.test.tsx`). To run one file: `CI=true yarn test path/to/file.test.tsx`. `src/setupTests.ts` loads `@testing-library/jest-dom`.
 
 ## Environment variables (gotchas)
 
@@ -34,7 +34,7 @@
 
 - Use **relative imports only**. The tsconfig `"paths": {"*": ["src/*"]}` alias is not honored by CRA's webpack — code compiles with tsc but fails to bundle.
 - Adding a theme color requires editing **three** places: `lightTheme` and `darkTheme` in `src/styles/theme.ts`, plus the `DefaultTheme` declaration in `src/styles/styled.d.ts` (tsc errors on the missing key otherwise).
-- TS 4.1 + `@types/styled-components` gotcha: a styled component used **with children** fails tsc (`Property 'children' does not exist`) when it has an explicit props generic that omits `children`, or when it's rendered inside a closure (e.g. `.map()`) under another styled ancestor. Workaround (already the codebase convention, see `PageButtonStyled`): include `children?: React.ReactNode` in the props generic — e.g. `styled.div<{ $ok?: boolean; children?: React.ReactNode }>`.
+- TS 4.1 + `@types/styled-components` gotcha: a styled component used **with children** fails tsc (`Property 'children' does not exist`) when it has an explicit props generic that omits `children`, or when it's rendered inside a closure (e.g. `.map()`) under another styled ancestor. Workaround (already the codebase convention, see `PageButtonStyled`): include `children?: React.ReactNode` in the props generic — e.g. `styled.div<{ $ok?: boolean; children?: React.ReactNode }>`. Broader than it looks: even a plain `styled.button` nested in JSX fails on DOM props (`type`, `onClick`, `aria-*`, `value`, `onChange`), so list **every** prop you pass in the generic (see `ThemeToggleButton`, `NSFWFilterComponent`). `ref` can't be typed this way — put it on a plain inner element (see `SearchBox`'s `.search-root`).
 
 ## Active work (refresh each session)
 
@@ -66,6 +66,11 @@ Visual-pass fixes (2026-09-29, desktop, light+dark; verified by tsc, 5 tests, `y
 - Stray `;` removed from JSX in `PrintModelComponent.tsx`.
 - `react-helmet` removed (strict-mode `UNSAFE_componentWillMount` warning). The model page sets `document.title` in a `useEffect` and restores the previous title on unmount.
 - Remaining console noise: only the expected 404 on `/models/NOPE`.
+
+Header redesign (2026-09-29, desktop, light+dark; verified by tsc, 12 tests, `yarn build`, Playwright):
+- `HeaderComponent.tsx`: grid `minmax(32rem, 1fr) minmax(0, 640px) minmax(32rem, 1fr)`. Equal side columns keep the toolbar (search + rating + NSFW) exactly centered; checked at 1024/1280/1366/1920. `.navbar-lists` needs `padding: 0`, otherwise Bootstrap's `ul` padding widens the right column and shifts the centering. The active nav link is underlined.
+- Filters share `filterControlCss` (`src/components/filter/FilterControl.ts`): 44px high, 8px radius, `.active` class = filled with `btn` color. Rating is a native `<select>` ("Any rating", "★ N+"; backend treats `rate` as `>=`), replacing the react-bootstrap dropdown. NSFW is a toggle button with `aria-pressed`.
+- `SearchBox.tsx` (prop renamed `onKeyDown` → `onSearch`): `type="search"`, search icon, clear (×) button that resets the search. Suggestions span the full input width. Debounce is created once (`useMemo`) and cancelled on unmount; `latestQuery` ref drops stale responses. Suggestions close on Enter, Escape, outside click and suggestion click. Previously a new debounce was created on every render, and old responses could overwrite newer ones or reopen the list after the input was cleared.
 
 Next: **pending user pick.** Known leftovers: empty bands above/below the card image in the catalog; pre-existing ESLint warnings (unused imports in `App.tsx`/`Footer.tsx`/`HeaderComponent.tsx`, exhaustive-deps).
 - Mock setup for visual checks without the backend (verified working): `node scripts/mock-api.js` (localhost:3001, 24 sample models, picsum placeholder images, admin actions return 200) + `yarn start:mock` (env from `.env.mock`; `REACT_APP_IMG_S3_URL=` is empty so mock `preview`s are full URLs).

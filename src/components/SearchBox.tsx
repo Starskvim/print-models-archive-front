@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {debounce} from 'lodash';
 import {fetchSuggestionsPrintModels} from "../services/ProductService";
-import {NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 import styled from "styled-components";
 import {PrintModelSuggest} from "../types/PrintModelSuggest";
 import StarRatingComponent from './card/StarRatingComponent';
@@ -9,78 +9,122 @@ import NSFWIndicatorComponent from './card/NSFWIndicatorComponent';
 
 interface SearchBoxProps {
     value: string | undefined;
-    onKeyDown: (value: string) => void
+    onSearch: (value: string) => void
 }
 
 const SearchBox: React.FC<SearchBoxProps> = (
     {
         value,
-        onKeyDown
+        onSearch
     }
 ) => {
 
-    const [inputValue, setInputValue] = useState(value);
-
+    const [inputValue, setInputValue] = useState(value || '');
     const [suggestions, setSuggestions] = useState<PrintModelSuggest[]>([]);
+    const rootRef = useRef<HTMLDivElement>(null);
+    // Only the response for the latest query may update suggestions.
+    const latestQuery = useRef('');
 
     useEffect(() => {
-        setInputValue(value);
+        setInputValue(value || '');
     }, [value]);
 
-    const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.currentTarget.value);
-        setSuggestions([])
-        if (e.currentTarget.value !== "") {
-            fetchSuggestions(e.currentTarget.value)
+    const fetchSuggestions = useMemo(() => debounce(async (query: string) => {
+        try {
+            const response = await fetchSuggestionsPrintModels(query);
+            if (latestQuery.current !== query) return;
+            setSuggestions(response.suggestions ? response.suggestions : []);
+        } catch (error) {
+            if (latestQuery.current === query) setSuggestions([]);
+        }
+    }, 400), []);
+
+    useEffect(() => () => fetchSuggestions.cancel(), [fetchSuggestions]);
+
+    const closeSuggestions = () => {
+        latestQuery.current = '';
+        fetchSuggestions.cancel();
+        setSuggestions([]);
+    };
+
+    useEffect(() => {
+        const handleOutsideClick = (e: MouseEvent) => {
+            if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
+                setSuggestions([]);
+            }
+        };
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => document.removeEventListener('mousedown', handleOutsideClick);
+    }, []);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const query = e.currentTarget.value;
+        setInputValue(query);
+        setSuggestions([]);
+        latestQuery.current = query;
+        if (query !== '') {
+            fetchSuggestions(query);
+        } else {
+            fetchSuggestions.cancel();
         }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            onKeyDown(inputValue || '');
+            closeSuggestions();
+            onSearch(inputValue);
+        } else if (e.key === 'Escape') {
+            closeSuggestions();
         }
     };
 
-    const fetchSuggestions = debounce(async name => {
-        if (name !== undefined) {
-            const response = await fetchSuggestionsPrintModels(name);
-            setSuggestions(response.suggestions ? response.suggestions : []);
-        }
-    }, 400);
+    const handleClear = () => {
+        closeSuggestions();
+        setInputValue('');
+        onSearch('');
+    };
 
-    // TODO width: "800px" ?????
     return (
         <StyledSuggests>
-            <div className="search-box-container-element">
+            <div className="search-root" ref={rootRef}>
+                <svg className="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7"/>
+                    <line x1="16.5" y1="16.5" x2="21" y2="21"/>
+                </svg>
                 <input
-                    type="text"
-                    className="search-box-container-input"
+                    type="search"
+                    className="search-input"
                     placeholder="Search by models name..."
-                    value={inputValue || ''}
+                    aria-label="Search models"
+                    autoComplete="off"
+                    value={inputValue}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
                 />
+                {inputValue !== '' && (
+                    <button type="button" className="clear-btn" aria-label="Clear search" onClick={handleClear}>
+                        ×
+                    </button>
+                )}
                 {suggestions.length > 0 && (
                     <ul className="suggestions">
-                        {suggestions.map((suggestion, index) => (
-                            <NavLink to={`/models/${suggestion.id}`} key={index}>
-                                <li>
-                                    <div className="suggestion-item">
-                                        <img
-                                            src={suggestion.preview}
-                                            alt={suggestion.modelName}
-                                            className="suggestion-image"
-                                        />
-                                        <div className="suggestion-content">
-                                            <span className="suggestion-name">{suggestion.modelName}</span>
-                                            <div className="suggestion-metadata">
-                                                <StarRatingComponent selectedStars={suggestion.rate} totalStars={5} />
-                                                <NSFWIndicatorComponent isVisible={suggestion.nsfw} />
-                                            </div>
+                        {suggestions.map(suggestion => (
+                            <li key={suggestion.id}>
+                                <Link to={`/models/${suggestion.id}`} className="suggestion-item" onClick={closeSuggestions}>
+                                    <img
+                                        src={suggestion.preview}
+                                        alt={suggestion.modelName}
+                                        className="suggestion-image"
+                                    />
+                                    <div className="suggestion-content">
+                                        <span className="suggestion-name">{suggestion.modelName}</span>
+                                        <div className="suggestion-metadata">
+                                            <StarRatingComponent selectedStars={suggestion.rate} totalStars={5}/>
+                                            <NSFWIndicatorComponent isVisible={suggestion.nsfw}/>
                                         </div>
                                     </div>
-                                </li>
-                            </NavLink>
+                                </Link>
+                            </li>
                         ))}
                     </ul>
                 )}
@@ -89,72 +133,132 @@ const SearchBox: React.FC<SearchBoxProps> = (
     );
 };
 
-const StyledSuggests = styled.div`
+const StyledSuggests = styled.div<{ children?: React.ReactNode }>`
     width: 100%;
-    position: relative;
 
-    .search-box-container-element {
-        flex-grow: 1;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        border: none;
-        background: transparent;
+    .search-root {
         position: relative;
+        width: 100%;
     }
 
-    .search-box-container-input {
+    .search-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        width: 18px;
+        height: 18px;
+        transform: translateY(-50%);
+        fill: none;
+        stroke: ${({theme}) => theme.colors.text};
+        stroke-width: 2;
+        stroke-linecap: round;
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .search-input {
         width: 100%;
-        padding: 12px 16px;
-        box-sizing: border-box;
+        height: 44px;
+        padding: 0 40px 0 42px;
         border: 1px solid ${({theme}) => theme.colors.border};
-        border-radius: 4px;
+        border-radius: 8px;
         font-size: 16px;
         background-color: ${({theme}) => theme.colors.input_bg};
         color: ${({theme}) => theme.colors.text};
-        
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
         &:focus {
-            border-color: ${({theme}) => theme.colors.helper};
-            box-shadow: 0 0 0 2px ${({theme}) => theme.colors.border};
+            border-color: ${({theme}) => theme.colors.btn};
+            box-shadow: 0 0 0 3px ${({theme}) => theme.colors.border};
             outline: none;
         }
-        
+
         &::placeholder {
             color: ${({theme}) => theme.colors.text};
-            opacity: 0.6;
+            opacity: 0.5;
+        }
+
+        &::-webkit-search-cancel-button {
+            display: none;
         }
     }
-    
-    .suggestion-item {
-        display: flex;
-        align-items: center;
-        padding: 8px;
-        border-bottom: 1px solid ${({theme}) => theme.colors.border};
-        background-color: ${({theme}) => theme.colors.input_bg};
-        
+
+    .clear-btn {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 28px;
+        height: 28px;
+        border: none;
+        border-radius: 50%;
+        background: transparent;
+        color: ${({theme}) => theme.colors.text};
+        font-size: 22px;
+        line-height: 1;
+        opacity: 0.6;
+        cursor: pointer;
+
         &:hover {
+            opacity: 1;
             background-color: ${({theme}) => theme.colors.bg};
         }
     }
 
+    .suggestions {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        list-style: none;
+        margin: 0;
+        padding: 6px;
+        background: ${({theme}) => theme.colors.input_bg};
+        border: 1px solid ${({theme}) => theme.colors.border};
+        border-radius: 8px;
+        box-shadow: ${({theme}) => theme.colors.shadowSupport};
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .suggestion-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px;
+        border-radius: 6px;
+        text-decoration: none;
+        color: ${({theme}) => theme.colors.text};
+
+        &:hover,
+        &:focus-visible {
+            background-color: ${({theme}) => theme.colors.bg};
+            outline: none;
+        }
+    }
+
     .suggestion-image {
-        width: 50px;
-        height: 50px;
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
         object-fit: cover;
-        margin-right: 10px;
-        border-radius: 4px;
+        border-radius: 6px;
     }
 
     .suggestion-content {
         display: flex;
         flex-direction: column;
         flex: 1;
+        min-width: 0;
         gap: 4px;
     }
 
     .suggestion-name {
         font-size: 16px;
-        color: ${({theme}) => theme.colors.text};
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 
     .suggestion-metadata {
@@ -165,38 +269,6 @@ const StyledSuggests = styled.div`
 
     .suggestion-metadata .star {
         font-size: 16px;
-    }
-
-    .suggestions {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: ${({theme}) => theme.colors.input_bg};
-        z-index: 1000;
-        list-style: none;
-        padding: 0;
-        margin: 0 auto;
-        border: 1px solid ${({theme}) => theme.colors.border};
-        border-top: none;
-        border-radius: 0 0 4px 4px;
-        box-shadow: ${({theme}) => theme.colors.shadowSupport};
-        
-        width: 55%;
-
-        li {
-            padding: 8px 12px;
-            cursor: pointer;
-            color: ${({theme}) => theme.colors.text};
-
-            &:hover {
-                background-color: ${({theme}) => theme.colors.bg};
-            }
-            
-            &:last-child {
-                border-radius: 0 0 4px 4px;
-            }
-        }
     }
 `;
 

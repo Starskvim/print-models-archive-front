@@ -6,7 +6,6 @@ import {useAppContext} from "../state/AppContext";
 import {useTheme} from "../contexts/ThemeContext";
 import SearchBox from "./SearchBox";
 import RateFilterComponent from "./filter/RateFilterComponent";
-import LogoComponent from "./logo/LogoComponent";
 import NSFWFilterComponent from "./filter/NSFWFilterComponent";
 import {getCatalog} from "../services/CatalogService";
 import {Catalog} from "../types/catalog/Catalog";
@@ -38,58 +37,46 @@ const HeaderComponent = () => {
 
     return (
         <MainHeader>
-            <div className="header-left">
-                {/* Logo removed as requested */}
-            </div>
-            <div className="header-center">
-                <SearchAndFilterStyled>
-                    <div className="search-container">
-                        <SearchBox
-                            value={globalState.searchQuery}
-                            onKeyDown={handleSearch}
-                        />
-                    </div>
-                    <div className="filters-container">
-                        <div className="rate-filter-container">
-                            <RateFilterComponent
-                                rate={globalState.rate}
-                                onChange={handleRateFilter}
-                            />
-                        </div>
-                        <NSFWFilterComponent
-                            isEnabled={globalState.nsfwOnly}
-                            onToggle={handleNsfwFilter}
-                        />
-                    </div>
-                </SearchAndFilterStyled>
-            </div>
+            <div className="header-left"/>
+            <Toolbar>
+                <div className="search-container">
+                    <SearchBox
+                        value={globalState.searchQuery}
+                        onSearch={handleSearch}
+                    />
+                </div>
+                <RateFilterComponent
+                    rate={globalState.rate}
+                    onChange={handleRateFilter}
+                />
+                <NSFWFilterComponent
+                    isEnabled={globalState.nsfwOnly}
+                    onToggle={handleNsfwFilter}
+                />
+            </Toolbar>
             <div className="header-right">
                 <Nav>
-                    <div className={"navbar active"}>
-                        <ul className="navbar-lists">
-                            <li>
-                                <NavLink to="/" className="navbar-link">
-                                    Home
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/models" className="navbar-link ">
-                                    Models
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/admin" className="navbar-link ">
-                                    Admin
-                                </NavLink>
-                            </li>
-                            <li>
-                                <ThemeToggleButton onClick={toggleTheme}>
-                                    {themeMode === 'light' ? '🌙' : '☀️'}
-                                </ThemeToggleButton>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul className="navbar-lists">
+                        <li>
+                            <NavLink to="/" className="navbar-link">
+                                Home
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/models" className="navbar-link">
+                                Models
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/admin" className="navbar-link">
+                                Admin
+                            </NavLink>
+                        </li>
+                    </ul>
                 </Nav>
+                <ThemeToggleButton onClick={toggleTheme} aria-label="Toggle theme">
+                    {themeMode === 'light' ? '🌙' : '☀️'}
+                </ThemeToggleButton>
             </div>
         </MainHeader>
     );
@@ -97,132 +84,73 @@ const HeaderComponent = () => {
 
 export default HeaderComponent;
 
-const SearchAndFilterStyled = styled.div`
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-
-    .search-container {
-        display: flex;
-        justify-content: center;
-        width: 500px;
-        max-width: 500px;
-    }
-
-    .filters-container {
-        position: absolute;
-        right: 0;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        flex-shrink: 0;
-    }
-
-    .rate-filter-container {
-        display: flex;
-        align-items: center;
-    }
-
-    @media (max-width: 768px) {
-        flex-direction: column;
-        gap: 10px;
-        
-        .search-container {
-            width: 100%;
-            max-width: none;
-            position: static;
-        }
-        
-        .filters-container {
-            position: static;
-            justify-content: center;
-        }
-    }
-`;
-
 const MainHeader = styled.header`
-    padding: 0 2rem;
-    height: 10rem;
+    padding: 0 2.4rem;
+    height: 8rem;
     background-color: ${({theme}) => theme.colors.header_bg};
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    /* Equal side columns keep the toolbar centered on the page */
+    grid-template-columns: minmax(32rem, 1fr) minmax(0, 640px) minmax(32rem, 1fr);
     align-items: center;
-    gap: 2rem;
-    position: relative;
-
-    .header-left {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        width: 0;
-    }
-
-    .header-center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-    }
+    gap: 3.2rem;
 
     .header-right {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-    }
-
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
-        height: auto;
-        padding: 1rem;
-        gap: 1rem;
-
-        .header-left {
-            display: none;
-        }
-
-        .header-center,
-        .header-right {
-            justify-content: center;
-        }
+        gap: 2.4rem;
+        white-space: nowrap;
     }
 `;
 
-const Nav = styled.nav`
+const Toolbar = styled.div<{ children?: React.ReactNode }>`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .search-container {
+        flex: 1;
+        min-width: 0;
+    }
+`;
+
+const Nav = styled.nav<{ children?: React.ReactNode }>`
     .navbar-lists {
         display: flex;
-        gap: 4.8rem;
+        gap: 2.8rem;
         align-items: center;
-
-        .navbar-link {
-            &:link,
-            &:visited {
-                display: inline-block;
-                text-decoration: none;
-                font-size: 1.8rem;
-                font-weight: 500;
-                text-transform: uppercase;
-                color: ${({theme}) => theme.colors.white};
-                transition: color 0.3s linear;
-            }
-
-            &:hover,
-            &:active {
-                color: ${({theme}) => theme.colors.helper};
-            }
-        }
+        margin: 0;
+        padding: 0;
+        list-style: none;
     }
 
-    .close-outline {
-        display: none;
+    .navbar-link {
+        display: inline-block;
+        padding: 4px 0;
+        text-decoration: none;
+        font-size: 1.6rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: ${({theme}) => theme.colors.white};
+        border-bottom: 2px solid transparent;
+        opacity: 0.85;
+        transition: opacity 0.2s ease, border-color 0.2s ease;
+
+        &:hover {
+            opacity: 1;
+        }
+
+        &.active {
+            opacity: 1;
+            border-bottom-color: ${({theme}) => theme.colors.white};
+        }
     }
 `;
 
 interface ThemeToggleButtonProps {
     onClick: () => void;
+    'aria-label': string;
     children: React.ReactNode;
 }
 
