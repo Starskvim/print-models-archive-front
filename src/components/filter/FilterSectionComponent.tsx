@@ -98,7 +98,7 @@ const StyledSection = styled.section`
       gap: 0.8rem;
       flex-shrink: 0;
       border: 1px solid transparent;
-      background-color: ${({ theme }) => theme.colors.bg};
+      background-color: transparent;
       color: ${({ theme }) => theme.colors.text};
       text-transform: capitalize;
       cursor: pointer;

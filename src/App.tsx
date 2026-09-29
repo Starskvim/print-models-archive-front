@@ -10,6 +10,7 @@ import {ThemeProvider, useTheme} from "./contexts/ThemeContext";
 import ModelsPageComponent from "./pages/ModelsPageComponent";
 import ModelPageComponent from "./pages/ModelPageComponent";
 import AdminPageComponent from "./pages/AdminPageComponent";
+import AnimatedBackground from "./components/AnimatedBackground";
 
 // Inner App component that uses the theme context
 const AppContent: React.FC = () => {
@@ -20,6 +21,7 @@ const AppContent: React.FC = () => {
             <AppProvider>
                 <Router>
                     <GlobalStyle/>
+                    <AnimatedBackground/>
                     <HeaderComponent/>
                     <Routes>
                         <Route path="/" element={<ModelsPageComponent/>}/>

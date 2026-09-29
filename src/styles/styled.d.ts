@@ -23,6 +23,9 @@ declare module 'styled-components' {
             shadowSupport: string;
             success: string;
             error: string;
+            bg_grid: string;
+            bg_glow_1: string;
+            bg_glow_2: string;
         },
         media: {
             mobile: string;

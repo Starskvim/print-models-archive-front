@@ -24,6 +24,9 @@ export const lightTheme: DefaultTheme = {
         shadowSupport: " rgba(0, 0, 0, 0.16) 0px 1px 4px",
         success: "#28a745",
         error: "#dc3545",
+        bg_grid: "rgba(98, 84, 243, 0.09)",
+        bg_glow_1: "rgba(98, 84, 243, 0.16)",
+        bg_glow_2: "rgba(98, 189, 252, 0.18)",
     },
     media: {
         mobile: "768px",
@@ -55,6 +58,9 @@ export const darkTheme: DefaultTheme = {
         shadowSupport: "rgba(0, 0, 0, 0.4) 0px 2px 8px",
         success: "#28a745",
         error: "#dc3545",
+        bg_grid: "rgba(156, 163, 255, 0.07)",
+        bg_glow_1: "rgba(120, 104, 255, 0.22)",
+        bg_glow_2: "rgba(80, 160, 255, 0.14)",
     },
     media: {
         mobile: "768px",
