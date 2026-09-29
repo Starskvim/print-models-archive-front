@@ -69,20 +69,18 @@ const AdminPageComponent: React.FC = () => {
 
     return (
         <AdminStyled>
-            <div >
-                <nav>
-                    {ACTIONS.map(action => (
-                        <ActionItem
-                            key={action.key}
-                            action={action}
-                            busy={busyAction === action.key}
-                            anyBusy={busyAction !== null}
-                            result={results[action.key]}
-                            onClick={() => runAction(action)}
-                        />
-                    ))}
-                </nav>
-            </div>
+            <nav>
+                {ACTIONS.map(action => (
+                    <ActionItem
+                        key={action.key}
+                        action={action}
+                        busy={busyAction === action.key}
+                        anyBusy={busyAction !== null}
+                        result={results[action.key]}
+                        onClick={() => runAction(action)}
+                    />
+                ))}
+            </nav>
         </AdminStyled>
     );
 }
@@ -94,8 +92,7 @@ const AdminStyled = styled.div`
 
     display: flex;          // Включаем Flexbox
     justify-content: center; // Центрируем контент по горизонтали
-    //align-items: center;     // Центрируем контент по вертикали
-    height: 100vh;           // Полная высота экрана
+    padding: 30px 0 60px;
 
     nav {
         display: flex;        // Используем Flexbox также для nav

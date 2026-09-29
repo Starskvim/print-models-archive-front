@@ -36,7 +36,6 @@ const PrintModelComponent = (
                 </DivRowStyled>
             </div>
         </div>
-        ;
     </Styled>
 
 

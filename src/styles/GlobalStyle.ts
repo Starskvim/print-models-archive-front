@@ -10,15 +10,21 @@ export const GlobalStyle = createGlobalStyle`
 
     html {
         font-size: 62.5%;
-        overflow-x: hidden;
+        overflow-x: clip;
     }
 
     body {
-        overflow-x: hidden;
+        overflow-x: clip;
         background-color: ${({theme}) => theme.colors.bg};
         color: ${({theme}) => theme.colors.text};
         scrollbar-color: ${({theme}) => theme.colors.btn};
         scrollbar-width: thin;
+    }
+
+    #root {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
     }
 
     body::-webkit-scrollbar {

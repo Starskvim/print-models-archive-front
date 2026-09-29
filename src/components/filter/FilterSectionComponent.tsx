@@ -1,7 +1,6 @@
 import React from "react";
 import {Category} from "../../types/catalog/Catalog";
 import styled from "styled-components";
-import {truncateString} from "../../utils/StringUtils";
 
 interface FilterSectionComponentProps {
     categories: Category[];
@@ -21,7 +20,7 @@ const FilterSectionComponent: React.FC <FilterSectionComponentProps> = (
         <StyledSection>
             <div className="filter-category">
                 <h3>Categories</h3>
-                <div>
+                <div className="category-list">
                     {categories.map((category, index) => (
                         <button
                             key={index}
@@ -32,7 +31,8 @@ const FilterSectionComponent: React.FC <FilterSectionComponentProps> = (
                             onClick={onCategoryChange(category.name)}
                             title={`${category.name} (${category.size} items)`}
                         >
-                            {truncateString(category.name, 6)} - {category.size}
+                            <span className="category-name">{category.name}</span>
+                            <span className="category-size">{category.size}</span>
                         </button>
                     ))}
                 </div>
@@ -44,75 +44,96 @@ const FilterSectionComponent: React.FC <FilterSectionComponentProps> = (
 export default FilterSectionComponent
 
 const StyledSection = styled.section`
-  padding: 1rem 0;
+  position: sticky;
+  top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
-  text-overflow: ellipsis;
-  max-height: calc(100vh - 200px);
-  overflow: hidden;
+  max-height: calc(100vh - 40px);
+  min-width: 0;
 
   h3 {
-    padding: 2rem 0;
+    padding: 1rem 0;
     font-size: bold;
     flex-shrink: 0;
   }
 
   .filter-category {
-    div {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+
+    /* Custom scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: ${({ theme }) => theme.colors.btn} transparent;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: ${({ theme }) => theme.colors.btn};
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: ${({ theme }) => theme.colors.border};
+    }
+
+    button {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.4rem;
-      max-height: calc(100vh - 300px);
-      overflow-y: auto;
-      padding-right: 0.5rem;
+      align-items: center;
+      gap: 0.8rem;
+      flex-shrink: 0;
+      border: 1px solid transparent;
+      background-color: ${({ theme }) => theme.colors.bg};
+      color: ${({ theme }) => theme.colors.text};
+      text-transform: capitalize;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      padding: 0.8rem 1.2rem;
+      border-radius: 0.4rem;
+      transition: all 0.3s ease;
 
-      /* Custom scrollbar styling */
-      &::-webkit-scrollbar {
-        width: 8px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: ${({ theme }) => theme.colors.bg};
-        border-radius: 4px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: ${({ theme }) => theme.colors.btn};
-        border-radius: 4px;
-      }
-
-      &::-webkit-scrollbar-thumb:hover {
-        background: ${({ theme }) => theme.colors.border};
-      }
-
-      button {
-        border: none;
-        background-color: ${({ theme }) => theme.colors.bg};
-        color: ${({ theme }) => theme.colors.text};
-        text-transform: capitalize;
-        cursor: pointer;
-        width: 100%;
-        text-align: left;
-        padding: 0.8rem 1.2rem;
-        border-radius: 0.4rem;
-        transition: all 0.3s ease;
-
-        &:hover {
-          background-color: ${({ theme }) => theme.colors.hr};
-          color: ${({ theme }) => theme.colors.btn};
-        }
-      }
-
-      .active {
-        background-color: ${({ theme }) => theme.colors.btn};
-        color: ${({ theme }) => theme.colors.white};
-        border: 1px solid ${({ theme }) => theme.colors.btn};
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.hr};
+        color: ${({ theme }) => theme.colors.btn};
       }
     }
+
+    .category-name {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .category-size {
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .active {
+      background-color: ${({ theme }) => theme.colors.btn};
+      color: ${({ theme }) => theme.colors.white};
+      border-color: ${({ theme }) => theme.colors.btn};
+    }
   }
-    
+
   .btnStyle {
     width: 2rem;
     height: 2rem;

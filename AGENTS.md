@@ -40,6 +40,8 @@
 
 Direction chosen by user: improve frontend **UX & reliability**. Scope so far: catalog + admin panel.
 
+**Desktop only — mobile layout is out of scope (user decision, 2026-09-29).** Don't report, fix or screenshot mobile-width issues; verify at desktop viewport (1366×900).
+
 Done & verified (`npx tsc --noEmit`, `yarn build`, and the 5 TDD tests in `src/pages/ModelPageComponent.test.tsx` all pass):
 - Catalog `src/pages/ModelsPageComponent.tsx`: loading/error/empty states, skeleton cards (`src/components/card/SkeletonCard.tsx`), race-guard on fetch, removed console.log.
 - Admin `src/pages/AdminPageComponent.tsx`: per-action feedback (Running... / OK / Failed(status)), all buttons disabled while any action runs, try/catch around service calls; added `success`/`error` theme tokens (`theme.ts` + `styled.d.ts`); `AdminButton` disabled style; removed 5 console.log from `src/services/AdminService.ts`.
@@ -51,9 +53,20 @@ Mock / verify:
 - This env's Node 24.19 gotcha: `http.request` (url or host/port forms) is broken — `AggregateError ECONNREFUSED` (dual-stack) or timeout + `ECONNRESET`; `http.get` and global `fetch` work. The CORS preflight check in `scripts/verify-mock.js` therefore uses **`fetch`**, not `http.request`.
 - `verify-mock.js` compile-check now accepts `Compiled with warnings` (CRA prints that, not `Compiled successfully`).
 - Verified against fixed mock: GET → 200, OPTIONS → 204 (via `fetch`); all 14 endpoint checks pass.
+- `verify-mock.js` "app page returns HTML" used `/<doctype/i` (missing `!`) → always failed and killed the stack. Fixed to `/<!doctype/i` (2026-09-29).
+- Visual checks without a Chrome extension: Playwright installed in the session scratchpad (`npm i playwright` + `npx playwright install chromium`), headless screenshots via `localStorage.setItem("theme-mode", "light"|"dark")` in `addInitScript`; Claude reads the PNGs with Read.
 
 Repo state (2026-09-27): all of the above is committed and pushed; working tree clean. Git remote is named `master` and the only branch is `master` (no `main`) — push with `git push master master`. Open question for the user: `.yarnrc.yml` has `approvedGitRepositories: "**"` and `npmMinimalAgeGate: 0` (relaxed supply-chain checks), committed as-is.
 
-Next: **pending user pick.** Admin visual pass (light+dark) — user confirmed OK.
+Visual-pass fixes (2026-09-29, desktop, light+dark; verified by tsc, 5 tests, `yarn build`, Playwright screenshots). Not yet committed:
+- Category sidebar (`src/components/filter/FilterSectionComponent.tsx`): full names (the 6-char `truncateString` is gone), ellipsis via CSS, count in its own column. The sidebar is `position: sticky` and the list scrolls inside it (checked with 60 injected categories via Playwright `page.route`).
+- Sticky needs `overflow-x: clip` (not `hidden`) on `html`/`body` in `src/styles/GlobalStyle.ts`: `hidden` on both turns `body` into a scroll container, and sticky silently stops working.
+- Sticky footer: `#root` is a flex column with `min-height: 100vh`, and the `Footer` wrapper has `margin-top: auto`. It replaces the old `height: 100vh` hack on the admin page.
+- Admin page: 30px top padding, empty wrapper removed.
+- Stray `;` removed from JSX in `PrintModelComponent.tsx`.
+- `react-helmet` removed (strict-mode `UNSAFE_componentWillMount` warning). The model page sets `document.title` in a `useEffect` and restores the previous title on unmount.
+- Remaining console noise: only the expected 404 on `/models/NOPE`.
+
+Next: **pending user pick.** Known leftovers: empty bands above/below the card image in the catalog; pre-existing ESLint warnings (unused imports in `App.tsx`/`Footer.tsx`/`HeaderComponent.tsx`, exhaustive-deps).
 - Mock setup for visual checks without the backend (verified working): `node scripts/mock-api.js` (localhost:3001, 24 sample models, picsum placeholder images, admin actions return 200) + `yarn start:mock` (env from `.env.mock`; `REACT_APP_IMG_S3_URL=` is empty so mock `preview`s are full URLs).
 - Running verify: `node scripts/verify-mock.js --keep-running` (keeps mock on 3001 + dev on 3000 alive; supervisor PID logged, stop with `taskkill /F /PID <pid> /T`). **Needs 3000/3001 free** — stop any running stack first (it spawns its own mock on 3001).

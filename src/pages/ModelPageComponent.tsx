@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import styled, {useTheme} from "styled-components";
-import {Helmet} from "react-helmet";
 import {Link, useParams} from "react-router-dom";
 import {getModelCard} from "../services/ProductService";
 import PrintModelComponent from "../components/card/PrintModelComponent";
@@ -45,6 +44,16 @@ const ModelPageComponent: React.FC = () => {
         };
     }, [id, retryTick]);
 
+    const modelName = status === "ready" ? globalState.product?.modelName : undefined;
+    useEffect(() => {
+        if (!modelName) return;
+        const previousTitle = document.title;
+        document.title = modelName;
+        return () => {
+            document.title = previousTitle;
+        };
+    }, [modelName]);
+
     const getAllImages = () => {
         if (!globalState.product) return [];
         const product = globalState.product;
@@ -78,9 +87,6 @@ const ModelPageComponent: React.FC = () => {
 
     return (
         <ModelPageStyled>
-            <Helmet>
-                <title>{globalState.product?.modelName}</title>
-            </Helmet>
             {status === "loading" && (
                 <>
                     <div data-testid="slider-skeleton" className="slider-skeleton"/>

@@ -26,6 +26,7 @@ const Footer = () => {
 };
 
 const Wrapper = styled.section`
+  margin-top: auto;
 
   footer {
     //padding: 14rem 0 9rem 0; TODO
