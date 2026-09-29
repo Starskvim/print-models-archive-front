@@ -13,7 +13,7 @@
 - There are **no lint or typecheck scripts**:
   - Typecheck: `npx tsc --noEmit`
   - ESLint (`react-app` preset) only runs inside `start`/`build`.
-- Tests: `yarn test` runs all suites (currently 12 tests: 5 in `src/pages/ModelPageComponent.test.tsx`, 7 in `src/components/SearchBox.test.tsx`). To run one file: `CI=true yarn test path/to/file.test.tsx`. `src/setupTests.ts` loads `@testing-library/jest-dom`.
+- Tests: `yarn test` runs all suites (currently 14 tests: 5 in `src/pages/ModelPageComponent.test.tsx`, 7 in `src/components/SearchBox.test.tsx`, 2 in `src/components/logo/LogoComponent.test.tsx`). jsdom has no `AnimationEvent`: `fireEvent.animationEnd(el, {animationName})` loses the name, so dispatch `Object.assign(new Event('animationend', {bubbles: true}), {animationName})` instead. To run one file: `CI=true yarn test path/to/file.test.tsx`. `src/setupTests.ts` loads `@testing-library/jest-dom`.
 
 ## Environment variables (gotchas)
 
@@ -73,6 +73,8 @@ Header redesign (2026-09-29, desktop, light+dark; verified by tsc, 12 tests, `ya
 - `SearchBox.tsx` (prop renamed `onKeyDown` → `onSearch`): `type="search"`, search icon, clear (×) button that resets the search. Suggestions span the full input width. Debounce is created once (`useMemo`) and cancelled on unmount; `latestQuery` ref drops stale responses. Suggestions close on Enter, Escape, outside click and suggestion click. Previously a new debounce was created on every render, and old responses could overwrite newer ones or reopen the list after the input was cleared.
 
 Animated background (2026-09-29, "build plate" style chosen by user): `src/components/AnimatedBackground.tsx`, rendered in `App.tsx` after `GlobalStyle`. It is a `position: fixed; z-index: -1` layer: a faint 48px grid drifting diagonally (radial mask fades the edges) plus 3 radial-gradient glows on 38–60s alternate loops. Only `transform`/`opacity` are animated and there is no `filter: blur`, to keep it cheap. `prefers-reduced-motion` turns the animation off. Theme tokens: `bg_grid`, `bg_glow_1`, `bg_glow_2`. Anything painted with `theme.colors.bg` shows up as a patch on top of it, so the category buttons are now `transparent`.
+
+Header logo (2026-09-29, "print layer by layer" style chosen by user): `src/components/logo/LogoComponent.tsx` replaces the old, unused pixel-Pikachu component and sits in `.header-left`. It is a "PRINT MODEL" wordmark with layer lines (striped gradient clipped to the text) revealed bottom-up via `clip-path` in 12 `steps()`. A nozzle (inline SVG, glowing tip, hot orange layer line) rides the print edge with the same step timing and sweeps left and right, then parks and fades; "ARCHIVE" letters are spread across the wordmark width. Hover reprints by bumping a React `key`, and only after the `logo-nozzle-park` animation ends. Under `prefers-reduced-motion` the logo is static and the nozzle is hidden.
 
 Next: **pending user pick.** Known leftovers: empty bands above/below the card image in the catalog; pre-existing ESLint warnings (unused imports in `App.tsx`/`Footer.tsx`/`HeaderComponent.tsx`, exhaustive-deps).
 - Mock setup for visual checks without the backend (verified working): `node scripts/mock-api.js` (localhost:3001, 24 sample models, picsum placeholder images, admin actions return 200) + `yarn start:mock` (env from `.env.mock`; `REACT_APP_IMG_S3_URL=` is empty so mock `preview`s are full URLs).

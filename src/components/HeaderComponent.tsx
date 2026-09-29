@@ -7,6 +7,7 @@ import {useTheme} from "../contexts/ThemeContext";
 import SearchBox from "./SearchBox";
 import RateFilterComponent from "./filter/RateFilterComponent";
 import NSFWFilterComponent from "./filter/NSFWFilterComponent";
+import LogoComponent from "./logo/LogoComponent";
 import {getCatalog} from "../services/CatalogService";
 import {Catalog} from "../types/catalog/Catalog";
 
@@ -37,7 +38,9 @@ const HeaderComponent = () => {
 
     return (
         <MainHeader>
-            <div className="header-left"/>
+            <div className="header-left">
+                <LogoComponent/>
+            </div>
             <Toolbar>
                 <div className="search-container">
                     <SearchBox
@@ -93,6 +96,11 @@ const MainHeader = styled.header`
     grid-template-columns: minmax(32rem, 1fr) minmax(0, 640px) minmax(32rem, 1fr);
     align-items: center;
     gap: 3.2rem;
+
+    .header-left {
+        display: flex;
+        align-items: center;
+    }
 
     .header-right {
         display: flex;
