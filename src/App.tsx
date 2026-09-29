@@ -11,6 +11,7 @@ import ModelsPageComponent from "./pages/ModelsPageComponent";
 import ModelPageComponent from "./pages/ModelPageComponent";
 import AdminPageComponent from "./pages/AdminPageComponent";
 import AnimatedBackground from "./components/AnimatedBackground";
+import NozzleCursor from "./components/cursor/NozzleCursor";
 
 // Inner App component that uses the theme context
 const AppContent: React.FC = () => {
@@ -22,6 +23,7 @@ const AppContent: React.FC = () => {
                 <Router>
                     <GlobalStyle/>
                     <AnimatedBackground/>
+                    <NozzleCursor/>
                     <HeaderComponent/>
                     <Routes>
                         <Route path="/" element={<ModelsPageComponent/>}/>
