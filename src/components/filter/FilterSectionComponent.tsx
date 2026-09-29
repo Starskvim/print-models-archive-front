@@ -28,6 +28,7 @@ const FilterSectionComponent: React.FC <FilterSectionComponentProps> = (
                             name="category"
                             value={category.name}
                             className={selectedCategory === category.name ? "active" : ""}
+                            aria-pressed={selectedCategory === category.name}
                             onClick={onCategoryChange(category.name)}
                             title={`${category.name} (${category.size} items)`}
                         >

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import {fetchModelCards} from "../services/ProductService";
 import PrintModelCardsComponent from "../components/card/PrintModelCardsComponent";
@@ -15,30 +15,27 @@ type LoadStatus = 'loading' | 'error' | 'ready';
 const ModelsPageComponent: React.FC = () => {
 
     const { categoryName } = useParams<{ categoryName?: string }>();
+    const navigate = useNavigate();
 
     const {globalState, updateGlobalState} = useAppContext();
 
     const [status, setStatus] = useState<LoadStatus>('loading');
     const [retryTick, setRetryTick] = useState(0);
 
+    const urlCategory = categoryName !== undefined && categoryName !== 'all' ? categoryName : undefined;
+    const activeCategory = urlCategory ?? globalState.selectedCategory;
+
     useEffect(() => {
         let cancelled = false;
         setStatus('loading');
         window.scrollTo(0, 0);
-
-        let categoryForQuery: string | undefined;
-        if (categoryName !== 'all' && categoryName !== undefined) {
-            categoryForQuery = categoryName;
-        } else {
-            categoryForQuery = globalState.selectedCategory;
-        }
 
         fetchModelCards(
             globalState.currentPage,
             PAGE_SIZE,
             undefined,
             globalState.searchQuery,
-            categoryForQuery,
+            activeCategory,
             globalState.rate,
             globalState.nsfwOnly
         )
@@ -75,8 +72,14 @@ const ModelsPageComponent: React.FC = () => {
         updateGlobalState({currentPage: target});
     };
 
+    // Clicking the selected category again switches it off. A category URL
+    // (/models/category/:name) is left for /models once the sidebar takes over.
     const handleCategoryChange = (category: string) => () => {
-        updateGlobalState({currentPage: 1, selectedCategory: category});
+        const next = category === activeCategory ? 'all' : category;
+        updateGlobalState({currentPage: 1, selectedCategory: next});
+        if (urlCategory !== undefined) {
+            navigate('/models');
+        }
     }
 
     return (
@@ -84,7 +87,7 @@ const ModelsPageComponent: React.FC = () => {
             <div className="container grid grid-filter-column">
                     <FilterSectionComponent
                         categories={globalState.categories}
-                        selectedCategory={globalState.selectedCategory}
+                        selectedCategory={activeCategory}
                         onCategoryChange={handleCategoryChange}
                     />
                     {status === 'loading' && (
