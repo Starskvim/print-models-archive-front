@@ -202,7 +202,7 @@ async function main() {
   log("dev server compiled");
 
   const html = (await httpGet("http://127.0.0.1:3000/")).body;
-  check("app page returns HTML", /<doctype/i.test(html));
+  check("app page returns HTML", /<!doctype/i.test(html));
 
   const scriptSrcs = [];
   const matches = html.match(/<script[^>]+src="([^"]+)"/g) || [];
