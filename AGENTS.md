@@ -38,14 +38,15 @@
 
 ## Active work (refresh each session)
 
-Direction chosen by user: improve frontend **UX & reliability**. Scope so far: catalog + admin panel.
+Direction chosen by user: improve frontend **UX & reliability**, plus a 3D-printing-themed visual identity (the user likes bold, playful effects as long as they're not garish). Scope so far: catalog, model page, admin panel, header, global visuals.
 
 **Desktop only — mobile layout is out of scope (user decision, 2026-09-29).** Don't report, fix or screenshot mobile-width issues; verify at desktop viewport (1366×900).
 
-Done & verified (`npx tsc --noEmit`, `yarn build`, and the 5 TDD tests in `src/pages/ModelPageComponent.test.tsx` all pass):
+Workflow the user expects: propose options (AskUserQuestion with previews) for visual work, then implement, verify with tsc + tests + `yarn build` + Playwright screenshots (light + dark), update this file, and commit/push only when asked.
+
+Done & verified:
 - Catalog `src/pages/ModelsPageComponent.tsx`: loading/error/empty states, skeleton cards (`src/components/card/SkeletonCard.tsx`), race-guard on fetch, removed console.log.
 - Admin `src/pages/AdminPageComponent.tsx`: per-action feedback (Running... / OK / Failed(status)), all buttons disabled while any action runs, try/catch around service calls; added `success`/`error` theme tokens (`theme.ts` + `styled.d.ts`); `AdminButton` disabled style; removed 5 console.log from `src/services/AdminService.ts`.
-- Header search/filter UX (`HeaderComponent.tsx` + `RateFilterComponent.tsx` + `NSFWFilterComponent.tsx` + `SearchBox.tsx`): per-keystroke refetch (no debounce), no "clear all", no "All" option in category filter, no active-filter summary.
 - Model detail page `src/pages/ModelPageComponent.tsx` (TDD, 5 tests): loading skeleton slider (`data-testid="slider-skeleton"`) + `SkeletonCard` instead of the old `<p>Error</p>`; error block (message + "Try again" retry + "← Catalog" link); try/catch, race-guard on fetch (`cancelled`), retry via `retryTick`; theme-aware slider (removed hardcoded white bg/indicators, uses `theme.colors.*`); responsive width (`max-width: 600px; width: 100%`). Removed console.log from `src/services/ProductService.ts`.
 
 Mock / verify:
@@ -54,11 +55,11 @@ Mock / verify:
 - `verify-mock.js` compile-check now accepts `Compiled with warnings` (CRA prints that, not `Compiled successfully`).
 - Verified against fixed mock: GET → 200, OPTIONS → 204 (via `fetch`); all 14 endpoint checks pass.
 - `verify-mock.js` "app page returns HTML" used `/<doctype/i` (missing `!`) → always failed and killed the stack. Fixed to `/<!doctype/i` (2026-09-29).
-- Visual checks without a Chrome extension: Playwright installed in the session scratchpad (`npm i playwright` + `npx playwright install chromium`), headless screenshots via `localStorage.setItem("theme-mode", "light"|"dark")` in `addInitScript`; Claude reads the PNGs with Read.
+- Visual checks without a Chrome extension: Playwright is **not** a project dependency. Install it into the session scratchpad (`npm i playwright` + `npx playwright install chromium`; the Chromium binary is cached in `%LOCALAPPDATA%\ms-playwright`). Take headless screenshots with `localStorage.setItem("theme-mode", "light"|"dark")` in `addInitScript`; Claude reads the PNGs with Read. Useful tricks: `page.route` to inject data (e.g. 60 categories), `reducedMotion: "reduce"` context, `getComputedStyle(...).transform` sampled twice to prove an animation runs.
 
-Repo state (2026-09-27): all of the above is committed and pushed; working tree clean. Git remote is named `master` and the only branch is `master` (no `main`) — push with `git push master master`. Open question for the user: `.yarnrc.yml` has `approvedGitRepositories: "**"` and `npmMinimalAgeGate: 0` (relaxed supply-chain checks), committed as-is.
+Repo state (2026-09-29): everything below is committed and pushed (HEAD `f61003ef`); mock/dev stack stopped. Git remote is named `master` and the only branch is `master` (no `main`) — push with `git push master master`. Open question for the user: `.yarnrc.yml` has `approvedGitRepositories: "**"` and `npmMinimalAgeGate: 0` (relaxed supply-chain checks), committed as-is.
 
-Visual-pass fixes (2026-09-29, desktop, light+dark; verified by tsc, 5 tests, `yarn build`, Playwright screenshots). Not yet committed:
+Visual-pass fixes (2026-09-29, desktop, light+dark; verified by tsc, tests, `yarn build`, Playwright screenshots):
 - Category sidebar (`src/components/filter/FilterSectionComponent.tsx`): full names (the 6-char `truncateString` is gone), ellipsis via CSS, count in its own column. The sidebar is `position: sticky` and the list scrolls inside it (checked with 60 injected categories via Playwright `page.route`).
 - Sticky needs `overflow-x: clip` (not `hidden`) on `html`/`body` in `src/styles/GlobalStyle.ts`: `hidden` on both turns `body` into a scroll container, and sticky silently stops working.
 - Sticky footer: `#root` is a flex column with `min-height: 100vh`, and the `Footer` wrapper has `margin-top: auto`. It replaces the old `height: 100vh` hack on the admin page.
@@ -80,6 +81,6 @@ Category toggle (2026-09-29, TDD, 3 tests in `ModelsPageComponent.test.tsx`): th
 
 Nozzle cursor (2026-09-29, chosen by user): `src/components/cursor/NozzleCursor.tsx`, rendered in `App.tsx` after `AnimatedBackground`. It is a full-viewport canvas (`pointer-events: none`, z-index 9999). The hotend is drawn with its tip as the hotspot and tilts with horizontal speed. The filament trail lasts 800ms and goes hot → orange → `theme.colors.btn`; the theme color is normalized to RGB via `ctx.fillStyle`. A click makes a molten splash with droplets under gravity, and the tip glows hotter over `a, button, [role=button], label`. Enabled only for `(pointer: fine)` without reduced motion, otherwise nothing renders and the native cursor stays. While enabled, a global style hides the native cursor except over inputs/textarea (text cursor) and select (pointer), and the nozzle is not drawn there. The rAF loop runs only while the trail, splashes or tilt are still animating: 0 frames when idle (verified). Trail segments use `lineCap: butt`, because round caps overlap into visible beads.
 
-Next: **pending user pick.** Known leftovers: empty bands above/below the card image in the catalog; pre-existing ESLint warnings (unused imports in `App.tsx`/`Footer.tsx`/`HeaderComponent.tsx`, exhaustive-deps).
+Next: **pending user pick.** Known leftovers: empty bands above/below the card image in the catalog; admin buttons still square and unstyled compared to the new header; pre-existing ESLint warnings (unused imports in `App.tsx`/`Footer.tsx`, exhaustive-deps in `HeaderComponent.tsx`/`AsyncImage.tsx`); `truncateString` in `src/utils/StringUtils.ts` is now unused; `TODO` comments in `Footer.tsx`; open `.yarnrc.yml` supply-chain question (above).
 - Mock setup for visual checks without the backend (verified working): `node scripts/mock-api.js` (localhost:3001, 24 sample models, picsum placeholder images, admin actions return 200) + `yarn start:mock` (env from `.env.mock`; `REACT_APP_IMG_S3_URL=` is empty so mock `preview`s are full URLs).
 - Running verify: `node scripts/verify-mock.js --keep-running` (keeps mock on 3001 + dev on 3000 alive; supervisor PID logged, stop with `taskkill /F /PID <pid> /T`). **Needs 3000/3001 free** — stop any running stack first (it spawns its own mock on 3001).
